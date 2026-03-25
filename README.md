@@ -4,6 +4,8 @@
 
 Built with Remotion + Claude Code | React 19 | TypeScript | Whisper AI
 
+![Editor Pro Max — Landing Page](assets/landing-hero-es.png)
+
 [English](#english) | [Espanol](#espanol)
 
 ---
@@ -168,6 +170,8 @@ MIT License. See [LICENSE](LICENSE) for details. Note: [Remotion](https://remoti
 ---
 
 ## Espanol
+
+![Editor Pro Max — Pagina Principal](assets/landing-full-es.png)
 
 ### Que es esto?
 
