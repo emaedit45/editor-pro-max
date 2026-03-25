@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "repository": {},
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "@imgly/background-removal-node": "^1.4.5",
     "@remotion/captions": "^4.0.440",

@@ -163,7 +163,7 @@ editor-pro-max/
 
 ### License
 
-This project is unlicensed (private). [Remotion](https://remotion.dev/license) requires a company license for companies with 3+ employees.
+MIT License. See [LICENSE](LICENSE) for details. Note: [Remotion](https://remotion.dev/license) and other dependencies have their own licenses.
 
 ---
 
@@ -288,7 +288,7 @@ TU                              CLAUDE CODE                    REMOTION
 
 ### Licencia
 
-Este proyecto no tiene licencia (privado). [Remotion](https://remotion.dev/license) requiere licencia empresarial para companias con 3+ empleados.
+Licencia MIT. Ver [LICENSE](LICENSE) para detalles. Nota: [Remotion](https://remotion.dev/license) y otras dependencias tienen sus propias licencias.
 
 ---
 
