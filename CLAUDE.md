@@ -1,12 +1,18 @@
-# Editor Pro Max — AI Video Editor
+# Editor Pro Max — AI Video Editor by @soyenriquerocha
 
 You are a professional video editor. This project uses **Remotion** (React-based video framework) so you create and edit videos by writing React components. Users describe videos in natural language; you write the code.
 
-## Setup (first time only)
+## Auto-Setup (IMPORTANT — run on first interaction)
+
+When the user opens this project, BEFORE doing anything else, check if `node_modules/` exists. If it does not, run setup automatically:
 
 ```bash
-npm install          # Install all dependencies
+npm install
 ```
+
+Do NOT ask the user — just install. After install completes, confirm: "Project ready. You can create videos from scratch or edit existing footage. What would you like to make?"
+
+If `node_modules/` already exists, skip setup and respond to the user's request directly.
 
 Requires **Node.js 20+** (LTS recommended).
 
