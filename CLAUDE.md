@@ -381,3 +381,179 @@ const colors = useColorScheme("dark"); // colors.bg, colors.text, colors.accent
 - Use `<Sequence from={X} durationInFrames={Y}>` for timing
 - Use `<Series>` when scenes play sequentially without overlaps
 - For frame math: `secondsToFrames(5, 30)` = 150 frames
+
+---
+
+## Video Editing Workflow
+
+Edit existing videos by running the pipeline, then creating a composition.
+
+### Step 1: Place video in project
+Copy your video to `public/assets/video.mp4`
+
+### Step 2: Run the pipeline
+```bash
+npx tsx scripts/analyze-video.ts public/assets/video.mp4    # → public/video-metadata.json
+npx tsx scripts/extract-audio.ts public/assets/video.mp4    # → public/assets/audio.wav
+npx tsx scripts/transcribe.ts                                # → public/captions.json (word-level)
+npx tsx scripts/detect-silence.ts public/assets/video.mp4   # → public/silence.json
+```
+
+### Step 3: Create composition using editing components/templates
+
+### Step 4: Preview and render
+```bash
+npm run dev                                    # Preview in Studio
+npx remotion render TalkingHeadEdit out/edited.mp4  # Export
+```
+
+## Editing Components
+
+### VideoClip (`src/components/media/VideoClip.tsx`)
+Video with seconds-based trimming. Wraps `Video` from `@remotion/media`.
+```tsx
+<VideoClip
+  src={staticFile("assets/video.mp4")}
+  trimStartSeconds={5}      // skip first 5 seconds
+  trimEndSeconds={30}       // end at 30 seconds
+  fit="cover"
+  volume={1}
+  playbackRate={1}
+/>
+```
+
+### CaptionOverlay (`src/components/text/CaptionOverlay.tsx`)
+TikTok-style captions with word-level highlighting. Loads captions.json automatically.
+```tsx
+<CaptionOverlay
+  captionsSource="captions.json"
+  preset="bold"              // classic | bold | outline | glow | box
+  position="bottom"          // top | center | bottom
+  fontSize={64}
+  highlightColor="#39E508"   // active word color
+  textColor="#ffffff"
+  combineTokensWithinMs={1200}
+  offsetMs={0}               // shift timing for clip extraction
+/>
+```
+
+### JumpCut (`src/components/media/JumpCut.tsx`)
+Auto-assembled video from speech segments — removes silence.
+```tsx
+<JumpCut
+  src={staticFile("assets/video.mp4")}
+  segments={[
+    {startSeconds: 1.2, endSeconds: 5.4},
+    {startSeconds: 6.1, endSeconds: 12.3},
+  ]}
+  paddingSeconds={0.1}
+/>
+```
+
+### ImageOverlay (`src/components/media/ImageOverlay.tsx`)
+Position an image anywhere with enter/exit animations.
+```tsx
+<ImageOverlay
+  src={staticFile("assets/logo.png")}
+  x={60} y={60}
+  width={120} height={120}
+  enterAnimation="scale"
+  exitAnimation="fade"
+/>
+```
+
+### AudioTrack (`src/components/media/AudioTrack.tsx`)
+Background music with fade and speech ducking.
+```tsx
+<AudioTrack
+  src={staticFile("assets/music.mp3")}
+  volume={0.15}
+  fadeInDurationSeconds={2}
+  fadeOutDurationSeconds={3}
+  duckDuringSegments={speechSegments}
+  duckVolume={0.05}
+  loop
+/>
+```
+
+## Editing Templates
+
+### TalkingHeadEdit
+All-in-one talking head video editor.
+```tsx
+<TalkingHeadEdit
+  videoSrc="assets/video.mp4"
+  captionsPath="captions.json"
+  silencePath="silence.json"
+  removeSilence={true}
+  showCaptions={true}
+  captionPreset="bold"
+  title="My Video Title"
+  speakerName="John Doe"
+  speakerTitle="CEO"
+  ctaText="Subscribe"
+  backgroundMusic="assets/music.mp3"
+  musicVolume={0.15}
+/>
+```
+
+### PodcastClip
+Extract a clip from longer content.
+```tsx
+<PodcastClip
+  videoSrc="assets/podcast.mp4"
+  clipStartSeconds={120}
+  clipEndSeconds={150}
+  captionsPath="captions.json"
+  showCaptions={true}
+  captionPreset="glow"
+  title="Best moment from today's episode"
+/>
+```
+
+## Editing Hooks
+
+**useVideoMetadata** — Load video metadata from pipeline.
+```tsx
+const metadata = useVideoMetadata("video-metadata.json");
+// metadata.duration, metadata.fps, metadata.width, metadata.height
+```
+
+**useTranscription** — Load captions with TikTok-style pages.
+```tsx
+const {captions, pages, isLoading} = useTranscription("captions.json", 1200);
+```
+
+**useSilenceSegments** — Load silence detection results.
+```tsx
+const data = useSilenceSegments("silence.json");
+// data.speechSegments, data.silenceSegments, data.totalDuration
+```
+
+## Pipeline Scripts
+
+| Script | Input | Output | Purpose |
+|---|---|---|---|
+| `scripts/analyze-video.ts` | video path | `public/video-metadata.json` | Extract duration, fps, dimensions |
+| `scripts/extract-audio.ts` | video path | `public/assets/audio.wav` | 16kHz WAV for Whisper |
+| `scripts/transcribe.ts` | audio.wav | `public/captions.json` | Word-level transcription |
+| `scripts/detect-silence.ts` | video path | `public/silence.json` | Find speech/silence segments |
+| `scripts/remove-bg.ts` | image path | `*-nobg.png` | AI background removal |
+
+## Editing Utilities (`src/utils/editing.ts`)
+
+```tsx
+import {buildCutList, mergeSegments, calculateTotalDuration, offsetCaptions} from "../utils/editing";
+
+// Build cut list from speech segments with padding
+const cuts = buildCutList(speechSegments, {paddingSeconds: 0.15, minSegmentSeconds: 0.3});
+
+// Merge adjacent segments separated by small gaps
+const merged = mergeSegments(cuts, 0.3);
+
+// Calculate total duration
+const totalSeconds = calculateTotalDuration(merged);
+
+// Offset captions for clip extraction
+const clipped = offsetCaptions(captions, 5000); // shift by 5 seconds
+```

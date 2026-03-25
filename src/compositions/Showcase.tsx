@@ -2,7 +2,9 @@ import {AbsoluteFill, Sequence} from "remotion";
 import {AnimatedTitle} from "../components/text/AnimatedTitle";
 import {LowerThird} from "../components/text/LowerThird";
 import {GradientBackground} from "../components/backgrounds/GradientBackground";
-import {GRADIENTS} from "../presets/colors";
+import {ParticleField} from "../components/backgrounds/ParticleField";
+import {Watermark} from "../components/overlays/Watermark";
+import {BRAND} from "../presets/brand";
 import {loadDefaultFonts} from "../presets/fonts";
 
 export const ShowcaseComposition: React.FC = () => {
@@ -12,26 +14,27 @@ export const ShowcaseComposition: React.FC = () => {
     <AbsoluteFill>
       {/* Background */}
       <GradientBackground
-        colors={GRADIENTS.midnight}
+        colors={[BRAND.colors.bg, "#1a1a3e"]}
         angle={135}
         animateAngle
         animateSpeed={0.5}
       />
+      <ParticleField count={30} color={`${BRAND.colors.primary}25`} speed={0.3} />
 
       {/* Main title */}
       <Sequence from={0} durationInFrames={150}>
         <AbsoluteFill style={{justifyContent: "center", alignItems: "center"}}>
           <AnimatedTitle
-            text="Editor Pro Max"
+            text={BRAND.name}
             fontSize={96}
             fontWeight={800}
-            color="#ffffff"
+            color={BRAND.colors.text}
             enterAnimation="scale"
             exitAnimation="blur"
             enterDuration={25}
             holdDuration={80}
             exitDuration={20}
-            textShadow="0 4px 30px rgba(99, 102, 241, 0.5)"
+            textShadow={`0 4px 30px ${BRAND.colors.primary}80`}
           />
         </AbsoluteFill>
       </Sequence>
@@ -46,10 +49,10 @@ export const ShowcaseComposition: React.FC = () => {
           }}
         >
           <AnimatedTitle
-            text="AI-Powered Video Editing"
+            text={BRAND.tagline}
             fontSize={36}
             fontWeight={400}
-            color="#c4b5fd"
+            color={BRAND.colors.muted}
             enterAnimation="slideUp"
             exitAnimation="fade"
             enterDuration={20}
@@ -59,14 +62,37 @@ export const ShowcaseComposition: React.FC = () => {
         </AbsoluteFill>
       </Sequence>
 
-      {/* Second scene title */}
+      {/* Brand handle */}
+      <Sequence from={60} durationInFrames={90}>
+        <AbsoluteFill
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 180,
+          }}
+        >
+          <AnimatedTitle
+            text={BRAND.handle}
+            fontSize={28}
+            fontWeight={600}
+            color={BRAND.colors.primary}
+            enterAnimation="fade"
+            exitAnimation="fade"
+            enterDuration={15}
+            holdDuration={40}
+            exitDuration={15}
+          />
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* Second scene */}
       <Sequence from={160} durationInFrames={130}>
         <AbsoluteFill style={{justifyContent: "center", alignItems: "center"}}>
           <AnimatedTitle
-            text="Built with Remotion"
-            fontSize={72}
+            text="Built with Remotion + Claude Code"
+            fontSize={64}
             fontWeight={700}
-            color="#ffffff"
+            color={BRAND.colors.text}
             enterAnimation="typewriter"
             exitAnimation="slideLeft"
             enterDuration={40}
@@ -79,14 +105,23 @@ export const ShowcaseComposition: React.FC = () => {
       {/* Lower third */}
       <Sequence from={170} durationInFrames={110}>
         <LowerThird
-          name="Claude Code"
-          title="Your AI Video Editor"
-          accentColor="#8b5cf6"
+          name="Enrique Rocha"
+          title={BRAND.handle}
+          accentColor={BRAND.colors.primary}
           enterDuration={20}
           holdDuration={60}
           exitDuration={15}
         />
       </Sequence>
+
+      {/* Watermark */}
+      <Watermark
+        text={BRAND.handle}
+        corner="bottomRight"
+        opacity={BRAND.watermark.opacity}
+        fontSize={BRAND.watermark.fontSize}
+        color={BRAND.colors.muted}
+      />
     </AbsoluteFill>
   );
 };

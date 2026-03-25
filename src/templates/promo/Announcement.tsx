@@ -5,7 +5,9 @@ import {GradientBackground} from "../../components/backgrounds/GradientBackgroun
 import {ParticleField} from "../../components/backgrounds/ParticleField";
 import {CallToAction} from "../../components/overlays/CallToAction";
 import {SafeArea} from "../../components/layout/SafeArea";
+import {Watermark} from "../../components/overlays/Watermark";
 import {loadDefaultFonts} from "../../presets/fonts";
+import {BRAND} from "../../presets/brand";
 
 export interface AnnouncementProps {
   preTitle?: string;
@@ -104,6 +106,8 @@ export const Announcement: React.FC<AnnouncementProps> = ({
           />
         </Sequence>
       )}
+
+      <Watermark text={BRAND.handle} corner="topRight" opacity={0.5} fontSize={14} color="#ffffff" margin={40} />
     </AbsoluteFill>
   );
 };

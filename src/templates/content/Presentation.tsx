@@ -3,7 +3,9 @@ import {AbsoluteFill, Sequence} from "remotion";
 import {AnimatedTitle} from "../../components/text/AnimatedTitle";
 import {GradientBackground} from "../../components/backgrounds/GradientBackground";
 import {SafeArea} from "../../components/layout/SafeArea";
+import {Watermark} from "../../components/overlays/Watermark";
 import {loadDefaultFonts} from "../../presets/fonts";
+import {BRAND} from "../../presets/brand";
 
 export interface Slide {
   title: string;
@@ -109,6 +111,8 @@ export const Presentation: React.FC<PresentationProps> = ({
           />
         </Sequence>
       ))}
+
+      <Watermark text={BRAND.handle} corner="bottomRight" opacity={0.4} fontSize={14} color="#ffffff" />
     </AbsoluteFill>
   );
 };

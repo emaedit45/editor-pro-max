@@ -16,6 +16,11 @@
       "sourceType": "github",
       "computedHash": "a748607aae40673c875dbaf4b6ae75885d5b063c1d25d872d6a07376c313dab4"
     },
+    "ffmpeg": {
+      "source": "digitalsamba/claude-code-video-toolkit",
+      "sourceType": "github",
+      "computedHash": "51fa05bc18bb2691e622aefd1d8ec6d4d96a9e9c44cdf599003c9d6003d11a07"
+    },
     "motion-designer": {
       "source": "ncklrs/startup-os-skills",
       "sourceType": "github",

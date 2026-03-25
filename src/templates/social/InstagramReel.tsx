@@ -6,6 +6,7 @@ import {Watermark} from "../../components/overlays/Watermark";
 import {ProgressBar} from "../../components/overlays/ProgressBar";
 import {SafeArea} from "../../components/layout/SafeArea";
 import {loadDefaultFonts} from "../../presets/fonts";
+import {BRAND} from "../../presets/brand";
 
 export interface InstagramReelProps {
   headline?: string;
@@ -70,9 +71,7 @@ export const InstagramReel: React.FC<InstagramReelProps> = ({
         )}
       </SafeArea>
 
-      {brandName && (
-        <Watermark text={brandName} corner="topRight" opacity={0.7} margin={60} fontSize={18} />
-      )}
+      <Watermark text={brandName || BRAND.handle} corner="topRight" opacity={0.6} margin={60} fontSize={16} color="#ffffff" />
 
       <ProgressBar color={accentColor} height={3} />
     </AbsoluteFill>

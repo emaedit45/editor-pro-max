@@ -4,8 +4,10 @@ import {AnimatedTitle} from "../../components/text/AnimatedTitle";
 import {GradientBackground} from "../../components/backgrounds/GradientBackground";
 import {CallToAction} from "../../components/overlays/CallToAction";
 import {ProgressBar} from "../../components/overlays/ProgressBar";
+import {Watermark} from "../../components/overlays/Watermark";
 import {SafeArea} from "../../components/layout/SafeArea";
 import {loadDefaultFonts} from "../../presets/fonts";
+import {BRAND} from "../../presets/brand";
 
 export interface TikTokVideoProps {
   hook?: string;
@@ -78,6 +80,9 @@ export const TikTokVideo: React.FC<TikTokVideoProps> = ({
 
       {/* Progress bar */}
       <ProgressBar color={accentColor} height={3} />
+
+      {/* Brand watermark */}
+      <Watermark text={BRAND.handle} corner="topRight" opacity={0.5} fontSize={14} color="#ffffff" margin={40} />
     </AbsoluteFill>
   );
 };

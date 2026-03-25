@@ -4,7 +4,9 @@ import {AnimatedTitle} from "../../components/text/AnimatedTitle";
 import {GradientBackground} from "../../components/backgrounds/GradientBackground";
 import {ParticleField} from "../../components/backgrounds/ParticleField";
 import {SafeArea} from "../../components/layout/SafeArea";
+import {Watermark} from "../../components/overlays/Watermark";
 import {loadDefaultFonts} from "../../presets/fonts";
+import {BRAND} from "../../presets/brand";
 
 export interface YouTubeShortProps {
   title?: string;
@@ -57,6 +59,8 @@ export const YouTubeShort: React.FC<YouTubeShortProps> = ({
           </AbsoluteFill>
         </Sequence>
       </SafeArea>
+
+      <Watermark text={BRAND.handle} corner="topRight" opacity={0.5} fontSize={14} color="#ffffff" margin={40} />
     </AbsoluteFill>
   );
 };

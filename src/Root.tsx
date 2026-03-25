@@ -16,6 +16,10 @@ import {Testimonial} from "./templates/content/Testimonial";
 import {Announcement} from "./templates/promo/Announcement";
 import {BeforeAfterDemo} from "./compositions/BeforeAfterDemo";
 
+// Editing templates
+import {TalkingHeadEdit} from "./templates/editing/TalkingHeadEdit";
+import {PodcastClip} from "./templates/editing/PodcastClip";
+
 export const RemotionRoot: React.FC = () => {
   return (
     <>
@@ -125,6 +129,38 @@ export const RemotionRoot: React.FC = () => {
           fps={30}
           width={1920}
           height={1080}
+        />
+      </Folder>
+
+      <Folder name="Editing">
+        <Composition
+          id="TalkingHeadEdit"
+          component={TalkingHeadEdit}
+          durationInFrames={900}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{
+            videoSrc: "assets/video.mp4",
+            showCaptions: true,
+            captionPreset: "bold" as const,
+            removeSilence: false,
+          }}
+        />
+        <Composition
+          id="PodcastClip"
+          component={PodcastClip}
+          durationInFrames={900}
+          fps={30}
+          width={1080}
+          height={1920}
+          defaultProps={{
+            videoSrc: "assets/video.mp4",
+            clipStartSeconds: 0,
+            clipEndSeconds: 30,
+            showCaptions: true,
+            captionPreset: "bold" as const,
+          }}
         />
       </Folder>
     </>

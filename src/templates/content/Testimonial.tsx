@@ -3,8 +3,9 @@ import {AbsoluteFill, Sequence, Img} from "remotion";
 import {AnimatedTitle} from "../../components/text/AnimatedTitle";
 import {GradientBackground} from "../../components/backgrounds/GradientBackground";
 import {SafeArea} from "../../components/layout/SafeArea";
-import {loadDefaultFonts} from "../../presets/fonts";
-import {FONT_FAMILIES} from "../../presets/fonts";
+import {loadDefaultFonts, FONT_FAMILIES} from "../../presets/fonts";
+import {Watermark} from "../../components/overlays/Watermark";
+import {BRAND} from "../../presets/brand";
 
 export interface TestimonialProps {
   quote?: string;
@@ -119,6 +120,8 @@ export const Testimonial: React.FC<TestimonialProps> = ({
           </Sequence>
         </AbsoluteFill>
       </SafeArea>
+
+      <Watermark text={BRAND.handle} corner="bottomRight" opacity={0.4} fontSize={14} color="#ffffff" />
     </AbsoluteFill>
   );
 };

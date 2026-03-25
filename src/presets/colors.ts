@@ -47,6 +47,14 @@ export const PALETTES = {
     accent: "#00ff88",
     accentAlt: "#ff0080",
   },
+  brand: {
+    bg: "#0a0a0a",
+    surface: "#141414",
+    text: "#ffffff",
+    textMuted: "#a0a0a0",
+    accent: "#8b5cf6",
+    accentAlt: "#6366f1",
+  },
 } as const;
 
 export type PaletteKey = keyof typeof PALETTES;
