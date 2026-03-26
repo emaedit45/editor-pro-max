@@ -379,6 +379,31 @@ const words = captionsToWords([{text: "Hello", startMs: 0, endMs: 500}], 30);
 const colors = useColorScheme("dark"); // colors.bg, colors.text, colors.accent
 ```
 
+## Agent Skills
+
+This project has 8 specialized skills installed. They provide deep domain knowledge — use them when relevant:
+
+| Skill | When to use |
+|---|---|
+| **remotion-best-practices** | Always active — correct Remotion API usage, captions, audio, video, transitions, trimming |
+| **motion-designer** | Planning scene composition, timing, pacing, camera movement, visual hierarchy, storytelling flow |
+| **awwwards-animations** | Premium animations — GSAP, Framer Motion, Anime.js, Lenis patterns for 60fps award-winning quality |
+| **animated-component-libraries** | Building UI components — Magic UI (150+ components) and React Bits (90+ components) references |
+| **ffmpeg** | Video/audio processing — format conversion, compression, resizing, audio extraction, filters |
+| **explainer-video-guide** | Creating explainer or educational videos — structure, scripting, pacing |
+| **remotion-render** | Programmatic rendering pipelines and advanced render configuration |
+| **playwright-mcp** | Browsing the web for visual references, style inspiration, screenshots of websites |
+
+### Browsing for Visual References
+
+When the user says things like:
+- "Make it look like Apple's product videos"
+- "I want the style from this website: [url]"
+- "Browse for TikTok caption trends"
+- "Find me reference styles for tech presentations"
+
+Use the playwright-mcp skill to browse the web, take screenshots, and extract visual references. Then apply those styles to the Remotion compositions. This runs a headless Chromium browser locally — no extensions needed, no internet accounts required.
+
 ## Workflow Tips
 
 - Put user media files (videos, images, audio) in `public/assets/` and reference with `staticFile("assets/filename.ext")`

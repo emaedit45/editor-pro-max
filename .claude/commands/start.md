@@ -24,6 +24,15 @@ EDIT EXISTING VIDEO
   "Cut the silence from my talking head"
   "Extract a 30-second clip for Instagram"
 
+BROWSE FOR REFERENCES
+  "I want the style from Apple's videos"
+  "Browse TikTok caption trends"
+  "Find me reference styles for tech presentations"
+
+SKILLS: 8 specialized AI skills loaded
+  Remotion best practices, motion design, award-winning animations,
+  animated components, FFmpeg, explainer videos, rendering, web browsing
+
 PREVIEW & RENDER
   npm run dev → Remotion Studio
   npx remotion render <id> out/video.mp4 → export
