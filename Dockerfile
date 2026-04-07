@@ -20,10 +20,13 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json* bun.lock* ./
+COPY package.json ./
+COPY package-lock.json* ./
+COPY bun.lock* ./
 
-# Install dependencies
-RUN npm install --production=false
+# Install ALL dependencies (not just production)
+ENV NODE_ENV=development
+RUN npm install
 
 # Copy project files
 COPY . .
