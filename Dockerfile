@@ -19,22 +19,22 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json ./
+# Copy ALL files first (including package-lock.json)
+COPY . .
 
-# Install dependencies — ci is stricter and faster
-RUN npm ci
+# Force NODE_ENV before install to ensure all deps are installed
+ENV NODE_ENV=development
+RUN npm install --force
 
-# Verify express is installed
+# Verify
 RUN node -e "require('express'); console.log('express OK')"
 RUN node -e "require('cors'); console.log('cors OK')"
-
-# Copy project files
-COPY . .
+RUN npx tsx --version
 
 # Create output directory
 RUN mkdir -p out
 
+ENV NODE_ENV=production
 EXPOSE 3100
 
 CMD ["npx", "tsx", "server.ts"]
