@@ -19,14 +19,12 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files first for caching
 COPY package.json ./
 COPY package-lock.json* ./
-COPY bun.lock* ./
 
-# Install ALL dependencies (not just production)
-ENV NODE_ENV=development
-RUN npm install
+# Force install ALL dependencies regardless of NODE_ENV
+RUN npm install --include=dev
 
 # Copy project files
 COPY . .
@@ -34,8 +32,6 @@ COPY . .
 # Create output directory
 RUN mkdir -p out
 
-# Expose port
 EXPOSE 3100
 
-# Start server
-CMD ["npx", "tsx", "server.ts"]
+CMD ["node", "--import", "tsx", "server.ts"]
