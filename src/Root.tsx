@@ -2,6 +2,10 @@ import {Composition, Folder} from "remotion";
 
 // Compositions
 import {ShowcaseComposition} from "./compositions/Showcase";
+import {MotionGraphic1Hook} from "./compositions/MotionGraphic1Hook";
+import {MotionGraphic2Stats} from "./compositions/MotionGraphic2Stats";
+import {MotionGraphic3CTA} from "./compositions/MotionGraphic3CTA";
+import {DynamicMG} from "./compositions/DynamicMG";
 
 // Social templates
 import {TikTokVideo} from "./templates/social/TikTokVideo";
@@ -129,6 +133,72 @@ export const RemotionRoot: React.FC = () => {
           fps={30}
           width={1920}
           height={1080}
+        />
+      </Folder>
+
+      <Folder name="Motion-Graphics-ADS-LANZ">
+        <Composition
+          id="MG1-Hook"
+          component={MotionGraphic1Hook}
+          durationInFrames={270}
+          fps={30}
+          width={1080}
+          height={1920}
+          defaultProps={{}}
+        />
+        <Composition
+          id="MG2-Stats"
+          component={MotionGraphic2Stats}
+          durationInFrames={450}
+          fps={30}
+          width={1080}
+          height={1920}
+          defaultProps={{}}
+        />
+        <Composition
+          id="MG3-CTA"
+          component={MotionGraphic3CTA}
+          durationInFrames={500}
+          fps={30}
+          width={1080}
+          height={1920}
+          defaultProps={{}}
+        />
+        <Composition
+          id="DynamicMG"
+          component={DynamicMG}
+          durationInFrames={300}
+          fps={30}
+          width={1080}
+          height={1920}
+          defaultProps={{
+            scenes: [
+              {
+                duration: 5,
+                background: {colors: ["#0a0a0a", "#1a1a3e"]},
+                particles: {count: 40, direction: "up"},
+                elements: [
+                  {type: "badge", text: "DEMO", delay: 0.2},
+                  {type: "title", text: "Dynamic MG", fontSize: 56, delay: 0.5},
+                  {type: "subtitle", text: "Composición universal", delay: 0.8},
+                ],
+              },
+              {
+                duration: 5,
+                background: {colors: ["#0f0f23", "#1a0a2e"]},
+                particles: {count: 30, direction: "up"},
+                elements: [
+                  {type: "glassCard", delay: 0.3, children: [
+                    {type: "counter", value: 1000, suffix: "+", label: "ventas", color: "#8b5cf6", delay: 0.5},
+                    {type: "progressBars", delay: 0.8, bars: [
+                      {label: "Conversión", value: 92, color: "#3b82f6"},
+                      {label: "ROI", value: 85, color: "#06b6d4"},
+                    ]},
+                  ]},
+                ],
+              },
+            ],
+          }}
         />
       </Folder>
 
