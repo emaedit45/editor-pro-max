@@ -19,12 +19,15 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copy package files first for caching
-COPY package.json ./
-COPY package-lock.json* ./
+# Copy package files
+COPY package.json package-lock.json ./
 
-# Force install ALL dependencies regardless of NODE_ENV
-RUN npm install --include=dev
+# Install dependencies — ci is stricter and faster
+RUN npm ci
+
+# Verify express is installed
+RUN node -e "require('express'); console.log('express OK')"
+RUN node -e "require('cors'); console.log('cors OK')"
 
 # Copy project files
 COPY . .
@@ -34,4 +37,4 @@ RUN mkdir -p out
 
 EXPOSE 3100
 
-CMD ["node", "--import", "tsx", "server.ts"]
+CMD ["npx", "tsx", "server.ts"]
