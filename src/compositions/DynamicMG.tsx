@@ -767,11 +767,11 @@ const SceneRenderer: React.FC<{
         filter: "blur(60px)",
       }} />
 
-      {/* Content — upper half only (960px), centered within */}
+      {/* Content — full frame (1920px) */}
       <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, height: 960,
+        position: "absolute", top: 0, left: 0, right: 0, height: 1920,
         display: "flex", flexDirection: "column", alignItems: "center",
-        justifyContent: "center", padding: "50px 44px", gap: 28,
+        justifyContent: "center", padding: "80px 44px", gap: 32,
       }}>
         {regularElements.map((element, i) => (
           <RenderElement key={i} element={element} frame={frame} fps={fps} />
