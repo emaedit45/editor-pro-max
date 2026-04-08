@@ -767,14 +767,14 @@ const SceneRenderer: React.FC<{
         filter: "blur(60px)",
       }} />
 
-      {/* Content area — 960px (upper half) by default, 1920px (full frame) if fullFrame prop */}
+      {/* Content area — 960px (upper half) by default, 1920px (full frame) if fullFrame */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0,
-        height: (scenes?.[0] as any)?.fullFrame ? 1920 : 960,
+        height: (scene as any)?.fullFrame ? 1920 : 960,
         display: "flex", flexDirection: "column", alignItems: "center",
         justifyContent: "center",
-        padding: (scenes?.[0] as any)?.fullFrame ? "80px 44px" : "50px 44px",
-        gap: (scenes?.[0] as any)?.fullFrame ? 32 : 28,
+        padding: (scene as any)?.fullFrame ? "80px 44px" : "50px 44px",
+        gap: (scene as any)?.fullFrame ? 32 : 28,
       }}>
         {regularElements.map((element, i) => (
           <RenderElement key={i} element={element} frame={frame} fps={fps} />
