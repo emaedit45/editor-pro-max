@@ -102,6 +102,136 @@ app.post("/render", (req, res) => {
   res.json({ jobId, outputFile });
 });
 
+// ─── RENDER FROM NATURAL LANGUAGE PROMPT ───
+
+function buildSystemPrompt(): string {
+  return [
+    "Eres un director creativo de motion graphics premium. Recibes una descripción en lenguaje natural y generas JSON de props para Remotion (DynamicMG).",
+    "Canvas: 1080x1920 vertical, 30fps. Responde SOLO con JSON válido, sin markdown, sin backticks.",
+    "",
+    "Elementos: badge, title, subtitle, counter, numberTicker, progressBars, checklist, notifications, ctaButton, chart, donutChart, pieChart, barChart, gaugeDial, statCard, progressCircle, versusLayout, beforeAfter, percentageSplit, phoneFrame, laptopFrame, browserWindow, glassCard (contenedor), gradientText, highlightedText, textReveal, quoteBlock, testimonialCard, starRating, reviewScore, processSteps, timelineVertical, iconGrid, numberedList, confettiBurst, glowPulse, animatedArrow, divider, metricRow.",
+    "",
+    "REGLAS: 3-5 elementos por escena. Delays en SEGUNDOS (0.2, 0.5, 0.8, 1.2...). fullFrame:true. Fondo blanco gradiente. Particles sutiles. Acentos #6429cd y #ff6b35. Textos oscuros #1a1a2e. Español. Piensa como director creativo premium.",
+  ].join("\n");
+}
+
+function buildUserPrompt(prompt: string, durationSeconds: number, context?: string): string {
+  const lines = [
+    "Crea un motion graphic de " + durationSeconds + " segundos con esta visión creativa:",
+    "",
+    prompt,
+    "",
+  ];
+  if (context) {
+    lines.push("Contexto del video: " + context, "");
+  }
+  lines.push(
+    "Genera JSON con esta estructura:",
+    '{"scenes":[{"duration":' + durationSeconds + ',"fullFrame":true,"background":{"type":"gradient","colors":["#ffffff","#f0f0f5"],"angle":180},"particles":{"count":12,"color":"rgba(100,41,205,0.06)","direction":"up"},"elements":[...]}]}'
+  );
+  return lines.join("\n");
+}
+
+app.post("/render-from-prompt", async (req, res) => {
+  const { prompt, outputName, durationSeconds = 5, context } = req.body;
+
+  if (!prompt || !outputName) {
+    res.status(400).json({ error: "prompt and outputName required" });
+    return;
+  }
+
+  try {
+    console.log("[prompt] Converting: " + prompt.slice(0, 100) + "...");
+
+    const apiKey = process.env.LOVABLE_API_KEY || "";
+    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + apiKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          { role: "system", content: buildSystemPrompt() },
+          { role: "user", content: buildUserPrompt(prompt, durationSeconds, context) },
+        ],
+        max_tokens: 4000,
+      }),
+    });
+
+    if (!aiResponse.ok) {
+      throw new Error("AI gateway error: " + aiResponse.status);
+    }
+
+    const aiData = await aiResponse.json() as any;
+    const rawText = aiData.choices?.[0]?.message?.content || "";
+    const cleanJson = rawText.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+
+    let props: any;
+    try {
+      props = JSON.parse(cleanJson);
+    } catch {
+      throw new Error("AI returned invalid JSON");
+    }
+
+    const elemCount = props.scenes?.[0]?.elements?.length || 0;
+    console.log("[prompt] Generated " + elemCount + " elements");
+
+    // Render with Remotion
+    const jobId = "job-" + (++jobCounter);
+    const outputFile = outputName + ".mp4";
+    const outputPath = path.join(OUT_DIR, outputFile);
+
+    const job: RenderJob = {
+      id: jobId,
+      status: "rendering",
+      progress: 0,
+      outputPath: outputPath.replace(/\\/g, "/"),
+    };
+    jobs.set(jobId, job);
+
+    const propsFileName = "_props_" + jobCounter + ".json";
+    const propsAbsolute = path.join(OUT_DIR, propsFileName);
+    fs.writeFileSync(propsAbsolute, JSON.stringify(props));
+
+    const parts = [
+      "npx", "remotion", "render", "DynamicMG",
+      "out/" + outputFile,
+      "--props=out/" + propsFileName,
+      "--frames=0-" + (Math.round(durationSeconds * 30) - 1),
+    ];
+
+    const cmd = parts.join(" ");
+    console.log("[" + jobId + "] " + cmd);
+
+    const child = exec(cmd, { cwd: PROJECT_DIR, maxBuffer: 10 * 1024 * 1024 }, (error, _stdout, stderr) => {
+      try { fs.unlinkSync(propsAbsolute); } catch {}
+      if (!error && fs.existsSync(outputPath)) {
+        job.status = "done";
+        job.progress = 100;
+      } else {
+        job.status = "error";
+        job.error = (stderr || error?.message || "Unknown error").slice(-500);
+      }
+    });
+
+    child.stdout?.on("data", (chunk: string) => {
+      const match = chunk.match(/Rendered (\d+)\/(\d+)/);
+      if (match) job.progress = Math.round((parseInt(match[1]) / parseInt(match[2])) * 100);
+    });
+    child.stderr?.on("data", (chunk: string) => {
+      const match = chunk.match(/Rendered (\d+)\/(\d+)/);
+      if (match) job.progress = Math.round((parseInt(match[1]) / parseInt(match[2])) * 100);
+    });
+
+    res.json({ jobId, outputFile, generatedProps: props });
+  } catch (err: any) {
+    console.error("[prompt] Error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/status/:jobId", (req, res) => {
   const job = jobs.get(req.params.jobId);
   if (!job) {
