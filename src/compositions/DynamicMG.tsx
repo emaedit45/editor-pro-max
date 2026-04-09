@@ -11,6 +11,38 @@ import {ParticleField} from "../components/backgrounds/ParticleField";
 import {GridPattern} from "../components/backgrounds/GridPattern";
 import {loadDefaultFonts} from "../presets/fonts";
 
+// ─── NEW ELEMENTS (30) ───
+import {PieChart} from "../components/elements/PieChart";
+import {DonutChart} from "../components/elements/DonutChart";
+import {BarChart} from "../components/elements/BarChart";
+import {GaugeDial} from "../components/elements/GaugeDial";
+import {NumberTicker} from "../components/elements/NumberTicker";
+import {StatCard} from "../components/elements/StatCard";
+import {ProgressCircle} from "../components/elements/ProgressCircle";
+import {BeforeAfter} from "../components/elements/BeforeAfter";
+import {VersusLayout} from "../components/elements/VersusLayout";
+import {PercentageSplit} from "../components/elements/PercentageSplit";
+import {PhoneFrame} from "../components/elements/PhoneFrame";
+import {LaptopFrame} from "../components/elements/LaptopFrame";
+import {QuoteBlock} from "../components/elements/QuoteBlock";
+import {HighlightedText} from "../components/elements/HighlightedText";
+import {TextReveal} from "../components/elements/TextReveal";
+import {GradientText} from "../components/elements/GradientText";
+import {TestimonialCard} from "../components/elements/TestimonialCard";
+import {StarRating} from "../components/elements/StarRating";
+import {ReviewScore} from "../components/elements/ReviewScore";
+import {TimelineVertical} from "../components/elements/TimelineVertical";
+import {ProcessSteps} from "../components/elements/ProcessSteps";
+import {IconGrid} from "../components/elements/IconGrid";
+import {NumberedList} from "../components/elements/NumberedList";
+import {AnimatedArrow} from "../components/elements/AnimatedArrow";
+import {CircleHighlight} from "../components/elements/CircleHighlight";
+import {UnderlineSwoosh} from "../components/elements/UnderlineSwoosh";
+import {ConfettiBurst} from "../components/elements/ConfettiBurst";
+import {GlowPulse} from "../components/elements/GlowPulse";
+import {CountdownTimer} from "../components/elements/CountdownTimer";
+import {CursorClick} from "../components/elements/CursorClick";
+
 // ─── TYPES ───
 
 interface SceneConfig {
@@ -47,7 +79,19 @@ type ElementConfig =
   | GlassCardConfig
   | ChartConfig
   | MetricRowConfig
-  | DividerConfig;
+  | DividerConfig
+  | ExtendedElementConfig;
+
+// Catch-all for the 30 new element types
+interface ExtendedElementConfig {
+  type: "pieChart" | "donutChart" | "barChart" | "gaugeDial" | "numberTicker" | "statCard" | "progressCircle"
+    | "beforeAfter" | "versusLayout" | "percentageSplit" | "phoneFrame" | "laptopFrame"
+    | "quoteBlock" | "highlightedText" | "textReveal" | "gradientText" | "testimonialCard" | "starRating" | "reviewScore"
+    | "timelineVertical" | "processSteps" | "iconGrid" | "numberedList" | "animatedArrow" | "circleHighlight" | "underlineSwoosh"
+    | "confettiBurst" | "glowPulse" | "countdownTimer" | "cursorClick";
+  delay?: number;
+  [key: string]: any;
+}
 
 interface BadgeConfig {
   type: "badge";
@@ -711,6 +755,67 @@ const RenderElement: React.FC<{
       ));
       return <BrowserWindow url={element.url} frame={frame} fps={fps} delay={delay}>{children}</BrowserWindow>;
     }
+    // ─── NEW ELEMENTS (30) ───
+    case "pieChart":
+      return <PieChart segments={(element as any).segments} size={(element as any).size} showLabels={(element as any).showLabels} delay={delay} />;
+    case "donutChart":
+      return <DonutChart segments={(element as any).segments} thickness={(element as any).thickness} centerLabel={(element as any).centerLabel} centerValue={(element as any).centerValue} delay={delay} />;
+    case "barChart":
+      return <BarChart bars={(element as any).bars} maxValue={(element as any).maxValue} showValues={(element as any).showValues} delay={delay} />;
+    case "gaugeDial":
+      return <GaugeDial value={(element as any).value} min={(element as any).min} max={(element as any).max} label={(element as any).label} color={(element as any).color} delay={delay} />;
+    case "numberTicker":
+      return <NumberTicker from={(element as any).from} to={(element as any).to} prefix={(element as any).prefix} suffix={(element as any).suffix} color={(element as any).color} fontSize={(element as any).fontSize} delay={delay} />;
+    case "statCard":
+      return <StatCard value={(element as any).value} label={(element as any).label} delta={(element as any).delta} deltaDirection={(element as any).deltaDirection} color={(element as any).color} delay={delay} />;
+    case "progressCircle":
+      return <ProgressCircle value={(element as any).value} max={(element as any).max} color={(element as any).color} trackColor={(element as any).trackColor} size={(element as any).size} label={(element as any).label} delay={delay} />;
+    case "beforeAfter":
+      return <BeforeAfter beforeLabel={(element as any).beforeLabel} afterLabel={(element as any).afterLabel} beforeItems={(element as any).beforeItems} afterItems={(element as any).afterItems} beforeColor={(element as any).beforeColor} afterColor={(element as any).afterColor} delay={delay} />;
+    case "versusLayout":
+      return <VersusLayout left={(element as any).left} right={(element as any).right} delay={delay} />;
+    case "percentageSplit":
+      return <PercentageSplit leftValue={(element as any).leftValue} rightValue={(element as any).rightValue} leftLabel={(element as any).leftLabel} rightLabel={(element as any).rightLabel} leftColor={(element as any).leftColor} rightColor={(element as any).rightColor} delay={delay} />;
+    case "phoneFrame":
+      return <PhoneFrame screenContent={(element as any).screenContent} deviceColor={(element as any).deviceColor} delay={delay} />;
+    case "laptopFrame":
+      return <LaptopFrame screenContent={(element as any).screenContent} url={(element as any).url} delay={delay} />;
+    case "quoteBlock":
+      return <QuoteBlock text={(element as any).text} author={(element as any).author} fontSize={(element as any).fontSize} quoteMarkColor={(element as any).quoteMarkColor} delay={delay} />;
+    case "highlightedText":
+      return <HighlightedText text={(element as any).text} highlightWords={(element as any).highlightWords} highlightColor={(element as any).highlightColor} fontSize={(element as any).fontSize} textColor={(element as any).textColor} delay={delay} />;
+    case "textReveal":
+      return <TextReveal text={(element as any).text} revealStyle={(element as any).revealStyle} speed={(element as any).speed} fontSize={(element as any).fontSize} color={(element as any).color} delay={delay} />;
+    case "gradientText":
+      return <GradientText text={(element as any).text} colors={(element as any).colors} angle={(element as any).angle} fontSize={(element as any).fontSize} fontWeight={(element as any).fontWeight} animated={(element as any).animated} delay={delay} />;
+    case "testimonialCard":
+      return <TestimonialCard quote={(element as any).quote} author={(element as any).author} role={(element as any).role} rating={(element as any).rating} color={(element as any).color} delay={delay} />;
+    case "starRating":
+      return <StarRating rating={(element as any).rating} maxStars={(element as any).maxStars} color={(element as any).color} size={(element as any).size} delay={delay} />;
+    case "reviewScore":
+      return <ReviewScore score={(element as any).score} maxScore={(element as any).maxScore} label={(element as any).label} reviewCount={(element as any).reviewCount} ringColor={(element as any).ringColor} size={(element as any).size} delay={delay} />;
+    case "timelineVertical":
+      return <TimelineVertical events={(element as any).events} lineColor={(element as any).lineColor} dotColor={(element as any).dotColor} delay={delay} />;
+    case "processSteps":
+      return <ProcessSteps steps={(element as any).steps} activeStep={(element as any).activeStep} color={(element as any).color} delay={delay} />;
+    case "iconGrid":
+      return <IconGrid items={(element as any).items} columns={(element as any).columns} iconSize={(element as any).iconSize} color={(element as any).color} delay={delay} />;
+    case "numberedList":
+      return <NumberedList items={(element as any).items} numberColor={(element as any).numberColor} delay={delay} />;
+    case "animatedArrow":
+      return <AnimatedArrow startX={(element as any).startX} startY={(element as any).startY} endX={(element as any).endX} endY={(element as any).endY} color={(element as any).color} strokeWidth={(element as any).strokeWidth} curved={(element as any).curved} delay={delay} />;
+    case "circleHighlight":
+      return <CircleHighlight size={(element as any).size} color={(element as any).color} strokeWidth={(element as any).strokeWidth} delay={delay} />;
+    case "underlineSwoosh":
+      return <UnderlineSwoosh width={(element as any).width} color={(element as any).color} strokeWidth={(element as any).strokeWidth} style={(element as any).style} delay={delay} />;
+    case "confettiBurst":
+      return <ConfettiBurst colors={(element as any).colors} particleCount={(element as any).particleCount} originX={(element as any).originX} originY={(element as any).originY} delay={delay} />;
+    case "glowPulse":
+      return <GlowPulse color={(element as any).color} size={(element as any).size} intensity={(element as any).intensity} pulseSpeed={(element as any).pulseSpeed} delay={delay} />;
+    case "countdownTimer":
+      return <CountdownTimer from={(element as any).from} to={(element as any).to} style={(element as any).style} color={(element as any).color} size={(element as any).size} label={(element as any).label} delay={delay} />;
+    case "cursorClick":
+      return <CursorClick startX={(element as any).startX} startY={(element as any).startY} endX={(element as any).endX} endY={(element as any).endY} clickDelay={(element as any).clickDelay} cursorColor={(element as any).cursorColor} rippleColor={(element as any).rippleColor} delay={delay} />;
     default:
       return null;
   }
