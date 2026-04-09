@@ -299,6 +299,7 @@ const ProgressBarGroup: React.FC<{
   fps: number;
   delay: number;
 }> = ({bars, frame, fps, delay}) => {
+  if (!bars?.length) return null;
   return (
     <div style={{display: "flex", flexDirection: "column", gap: 14, width: "100%"}}>
       {bars.map((bar, i) => {
@@ -341,6 +342,7 @@ const LineChart: React.FC<{
   fps: number;
   delay: number;
 }> = ({values, color = "#3b82f6", label, labelValue, frame, fps, delay}) => {
+  if (!values?.length) return null;
   const delayF = toFrames(delay, fps);
   const drawProgress = interpolate(frame - delayF, [0, 50], [0, 1], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
@@ -395,6 +397,7 @@ const ChecklistGroup: React.FC<{
   fps: number;
   delay: number;
 }> = ({items, frame, fps, delay}) => {
+  if (!items?.length) return null;
   return (
     <div style={{display: "flex", flexDirection: "column", gap: 14}}>
       {items.map((item, i) => {
@@ -434,6 +437,7 @@ const NotificationStack: React.FC<{
   fps: number;
   delay: number;
 }> = ({items, frame, fps, delay}) => {
+  if (!items?.length) return null;
   return (
     <div style={{
       position: "absolute", top: 720, right: 40,
@@ -514,6 +518,7 @@ const MetricRowComp: React.FC<{
   fps: number;
   delay: number;
 }> = ({metrics, frame, fps, delay}) => {
+  if (!metrics?.length) return null;
   return (
     <div style={{display: "flex", gap: 12, justifyContent: "center", width: "100%"}}>
       {metrics.map((m, i) => {
@@ -813,13 +818,13 @@ const RenderElement: React.FC<{
     case "divider":
       return <Divider color={element.color} frame={frame} fps={fps} delay={delay} />;
     case "glassCard": {
-      const children = element.children.map((child, i) => (
+      const children = (element.children || []).map((child, i) => (
         <RenderElement key={i} element={child} frame={frame} fps={fps} />
       ));
       return <GlassCard frame={frame} fps={fps} delay={delay}>{children}</GlassCard>;
     }
     case "browserWindow": {
-      const children = element.children.map((child, i) => (
+      const children = (element.children || []).map((child, i) => (
         <RenderElement key={i} element={child} frame={frame} fps={fps} />
       ));
       return <BrowserWindow url={element.url} frame={frame} fps={fps} delay={delay}>{children}</BrowserWindow>;
@@ -912,8 +917,9 @@ const SceneRenderer: React.FC<{
   const bgAngle = scene.background?.angle || 135;
 
   // Separate notifications from regular elements (notifications are absolute positioned)
-  const regularElements = scene.elements.filter((e) => e.type !== "notifications");
-  const notificationElements = scene.elements.filter((e) => e.type === "notifications") as NotificationsConfig[];
+  const allElements = scene.elements || [];
+  const regularElements = allElements.filter((e) => e.type !== "notifications");
+  const notificationElements = allElements.filter((e) => e.type === "notifications") as NotificationsConfig[];
 
   // Exit animation
   const exitAnim = (scene as any).exitAnimation;
