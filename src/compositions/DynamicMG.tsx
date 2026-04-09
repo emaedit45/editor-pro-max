@@ -711,6 +711,68 @@ const Divider: React.FC<{
   );
 };
 
+// ─── ENTRANCE ANIMATION WRAPPER ───
+
+const EntranceWrapper: React.FC<{
+  entrance?: string;
+  position?: { x?: string | number; y?: number };
+  frame: number;
+  fps: number;
+  delayFrames: number;
+  children: React.ReactNode;
+}> = ({ entrance = "fadeUp", position, frame, fps, delayFrames, children }) => {
+  const progress = spring({
+    fps,
+    frame: Math.max(0, frame - delayFrames),
+    config: { damping: 14, stiffness: 100 },
+  });
+
+  let opacity = interpolate(progress, [0, 1], [0, 1], { extrapolateRight: "clamp" });
+  let translateY = 0;
+  let translateX = 0;
+  let scale = 1;
+
+  switch (entrance) {
+    case "fadeUp":
+      translateY = interpolate(progress, [0, 1], [30, 0], { extrapolateRight: "clamp" });
+      break;
+    case "scale":
+      scale = interpolate(progress, [0, 1], [0.8, 1], { extrapolateRight: "clamp" });
+      break;
+    case "slideLeft":
+      translateX = interpolate(progress, [0, 1], [-60, 0], { extrapolateRight: "clamp" });
+      break;
+    case "slideRight":
+      translateX = interpolate(progress, [0, 1], [60, 0], { extrapolateRight: "clamp" });
+      break;
+    case "slideInFromSides":
+      translateX = interpolate(progress, [0, 1], [-40, 0], { extrapolateRight: "clamp" });
+      break;
+    case "fadeIn":
+    default:
+      break;
+  }
+
+  if (frame < delayFrames) {
+    opacity = 0;
+  }
+
+  const posStyle: React.CSSProperties = position?.y != null
+    ? { position: "absolute" as const, top: position.y, left: 0, right: 0, display: "flex", justifyContent: "center" }
+    : {};
+
+  return (
+    <div style={{
+      ...posStyle,
+      opacity,
+      transform: `translateY(${translateY}px) translateX(${translateX}px) scale(${scale})`,
+      willChange: "transform, opacity",
+    }}>
+      {children}
+    </div>
+  );
+};
+
 // ─── ELEMENT RENDERER ───
 
 const RenderElement: React.FC<{
@@ -718,8 +780,15 @@ const RenderElement: React.FC<{
   frame: number;
   fps: number;
 }> = ({element, frame, fps}) => {
-  const delay = (element as any).delay || 0;
+  const el = element as any;
+  // Support delay in frames (number > 1) or seconds (number < 1)
+  const rawDelay = el.delay || 0;
+  const delay = rawDelay > 10 ? rawDelay / fps : rawDelay; // if > 10, treat as frames
+  const delayFrames = rawDelay > 10 ? rawDelay : Math.round(rawDelay * fps);
+  const entrance = el.entrance;
+  const position = el.position;
 
+  const rendered = (() => {
   switch (element.type) {
     case "badge":
       return <PillBadge text={element.text} color={element.color} dotColor={element.dotColor} frame={frame} fps={fps} delay={delay} />;
@@ -819,6 +888,15 @@ const RenderElement: React.FC<{
     default:
       return null;
   }
+  })();
+
+  if (!rendered) return null;
+
+  return (
+    <EntranceWrapper entrance={entrance} position={position} frame={frame} fps={fps} delayFrames={delayFrames}>
+      {rendered}
+    </EntranceWrapper>
+  );
 };
 
 // ─── SCENE RENDERER ───
@@ -837,8 +915,22 @@ const SceneRenderer: React.FC<{
   const regularElements = scene.elements.filter((e) => e.type !== "notifications");
   const notificationElements = scene.elements.filter((e) => e.type === "notifications") as NotificationsConfig[];
 
+  // Exit animation
+  const exitAnim = (scene as any).exitAnimation;
+  let exitOpacity = 1;
+  if (exitAnim) {
+    const exitStart = exitAnim.startFrame || 130;
+    const exitDur = exitAnim.duration || 20;
+    exitOpacity = interpolate(frame, [exitStart, exitStart + exitDur], [1, 0], {
+      extrapolateLeft: "clamp", extrapolateRight: "clamp",
+    });
+  }
+
+  // Check if any element has explicit position (absolute positioning mode)
+  const hasPositions = regularElements.some((e) => (e as any).position?.y != null);
+
   return (
-    <AbsoluteFill>
+    <AbsoluteFill style={{ opacity: exitOpacity }}>
       {/* Background layers */}
       <GradientBackground
         colors={bgColors}
@@ -849,7 +941,7 @@ const SceneRenderer: React.FC<{
         <ParticleField
           count={scene.particles.count || 40}
           color={scene.particles.color || "rgba(255,255,255,0.3)"}
-          speed={scene.particles.speed || 0.5}
+          speed={(scene.particles as any).speedFactor || scene.particles.speed || 0.5}
           direction={scene.particles.direction || "up"}
         />
       )}
@@ -863,30 +955,43 @@ const SceneRenderer: React.FC<{
         />
       )}
 
-      {/* Ambient glow */}
+      {/* Ambient glow — simplified, no blur for performance */}
       <div style={{
         position: "absolute", top: "15%", left: "50%",
         width: 400, height: 400, borderRadius: "50%",
-        background: `radial-gradient(circle, ${(bgColors[1] || bgColors[0])}40 0%, transparent 70%)`,
+        background: `radial-gradient(circle, ${(bgColors[1] || bgColors[0])}30 0%, transparent 70%)`,
         transform: `translate(-50%, -50%) scale(${1 + Math.sin(frame * 0.03) * 0.15})`,
-        filter: "blur(60px)",
+        opacity: 0.6,
       }} />
 
-      {/* Content area — 960px (upper half) by default, 1920px (full frame) if fullFrame */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0,
-        height: (scene as any)?.fullFrame ? 1920 : 960,
-        display: "flex", flexDirection: "column", alignItems: "center",
-        justifyContent: "center",
-        padding: (scene as any)?.fullFrame ? "80px 44px" : "50px 44px",
-        gap: (scene as any)?.fullFrame ? 32 : 28,
-      }}>
-        {regularElements.map((element, i) => (
-          <RenderElement key={i} element={element} frame={frame} fps={fps} />
-        ))}
-      </div>
+      {/* Content area */}
+      {hasPositions ? (
+        /* Absolute positioning mode — each element positions itself */
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0,
+          height: (scene as any)?.fullFrame ? 1920 : 960,
+        }}>
+          {regularElements.map((element, i) => (
+            <RenderElement key={i} element={element} frame={frame} fps={fps} />
+          ))}
+        </div>
+      ) : (
+        /* Flex column mode (legacy) */
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0,
+          height: (scene as any)?.fullFrame ? 1920 : 960,
+          display: "flex", flexDirection: "column", alignItems: "center",
+          justifyContent: "center",
+          padding: (scene as any)?.fullFrame ? "80px 44px" : "50px 44px",
+          gap: (scene as any)?.fullFrame ? 32 : 28,
+        }}>
+          {regularElements.map((element, i) => (
+            <RenderElement key={i} element={element} frame={frame} fps={fps} />
+          ))}
+        </div>
+      )}
 
-      {/* Notifications (positioned within upper half) */}
+      {/* Notifications */}
       {notificationElements.map((n, i) => (
         <NotificationStack
           key={`notif-${i}`}
