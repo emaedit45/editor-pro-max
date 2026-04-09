@@ -111,7 +111,7 @@ function buildSystemPrompt(): string {
     "",
     "Elementos: badge, title, subtitle, counter, numberTicker, progressBars, checklist, notifications, ctaButton, chart, donutChart, pieChart, barChart, gaugeDial, statCard, progressCircle, versusLayout, beforeAfter, percentageSplit, phoneFrame, laptopFrame, browserWindow, glassCard (contenedor), gradientText, highlightedText, textReveal, quoteBlock, testimonialCard, starRating, reviewScore, processSteps, timelineVertical, iconGrid, numberedList, confettiBurst, glowPulse, animatedArrow, divider, metricRow.",
     "",
-    "REGLAS: 3-5 elementos por escena. Delays en SEGUNDOS (0.2, 0.5, 0.8, 1.2...). fullFrame:true. Fondo blanco gradiente. Particles sutiles. Acentos #6429cd y #ff6b35. Textos oscuros #1a1a2e. Español. Piensa como director creativo premium.",
+    "REGLAS: 3-5 elementos por escena. Delays en SEGUNDOS (0.2, 0.5, 0.8, 1.2...). fullFrame:true. Fondo oscuro tech premium (negros profundos con toque púrpura). Particles sutiles morado. Acentos #6429cd y #ff6b35. Textos blancos. Español. Piensa como director creativo premium.",
   ].join("\n");
 }
 
@@ -127,7 +127,7 @@ function buildUserPrompt(prompt: string, durationSeconds: number, context?: stri
   }
   lines.push(
     "Genera JSON con esta estructura:",
-    '{"scenes":[{"duration":' + durationSeconds + ',"fullFrame":true,"background":{"type":"gradient","colors":["#ffffff","#f0f0f5"],"angle":180},"particles":{"count":12,"color":"rgba(100,41,205,0.06)","direction":"up"},"elements":[...]}]}'
+    '{"scenes":[{"duration":' + durationSeconds + ',"fullFrame":true,"background":{"type":"gradient","colors":["#050510","#0a0618"],"angle":180},"particles":{"count":12,"color":"rgba(100,41,205,0.2)","direction":"up"},"elements":[...]}]}'
   );
   return lines.join("\n");
 }
