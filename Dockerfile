@@ -14,20 +14,21 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Set Chrome path for Remotion
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 ENV CHROMIUM_PATH=/usr/bin/chromium
 ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copy everything
+COPY package.json ./
+
+# Fresh install without lockfile to avoid resolution issues
+RUN npm install --legacy-peer-deps
+# Ensure express and cors are definitely installed
+RUN npm install express@5 cors tsx --legacy-peer-deps
+
 COPY . .
 
-# Install dependencies
-RUN npm ci || npm install
-
-# Create output directory
 RUN mkdir -p out
 
 EXPOSE 3100
