@@ -21,16 +21,11 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 
 WORKDIR /app
 
-# Install ALL dependencies (including devDependencies for tsx/typescript)
-COPY package.json package-lock.json ./
-RUN npm install --force --include=dev
-
-# Copy source
+# Copy everything
 COPY . .
 
-# Verify critical modules exist
-RUN node -e "require('express'); require('cors'); console.log('OK: express + cors')"
-RUN npx tsx --version
+# Install dependencies
+RUN npm ci || npm install
 
 # Create output directory
 RUN mkdir -p out
