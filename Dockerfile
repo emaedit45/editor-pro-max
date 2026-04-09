@@ -29,7 +29,7 @@ COPY . .
 RUN mkdir -p out
 
 # Pre-bundle Remotion so renders don't need to bundle each time
-RUN npx remotion bundle --public-dir=public 2>/dev/null || echo "Pre-bundle skipped"
+RUN npx remotion bundle
 
 EXPOSE 3100
 
