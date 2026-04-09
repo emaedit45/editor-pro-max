@@ -1,6 +1,6 @@
 FROM node:20-bookworm
 
-# Install Chromium + ffmpeg + dependencies for Remotion
+# Install Chromium + ffmpeg for Remotion
 RUN apt-get update && apt-get install -y \
     chromium \
     ffmpeg \
@@ -21,18 +21,20 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 
 WORKDIR /app
 
-# Install dependencies first (better caching)
+# Install ALL dependencies (including devDependencies for tsx/typescript)
 COPY package.json package-lock.json ./
-ENV NODE_ENV=development
-RUN npm install --force
+RUN npm install --force --include=dev
 
 # Copy source
 COPY . .
 
+# Verify critical modules exist
+RUN node -e "require('express'); require('cors'); console.log('OK: express + cors')"
+RUN npx tsx --version
+
 # Create output directory
 RUN mkdir -p out
 
-ENV NODE_ENV=production
 EXPOSE 3100
 
 CMD ["npx", "tsx", "server.ts"]
