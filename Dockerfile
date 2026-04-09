@@ -21,15 +21,15 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 WORKDIR /app
 
 COPY package.json ./
-
-# Fresh install without lockfile to avoid resolution issues
 RUN npm install --legacy-peer-deps
-# Ensure express and cors are definitely installed
 RUN npm install express@5 cors tsx --legacy-peer-deps
 
 COPY . .
 
 RUN mkdir -p out
+
+# Pre-bundle Remotion so renders don't need to bundle each time
+RUN npx remotion bundle --public-dir=public 2>/dev/null || echo "Pre-bundle skipped"
 
 EXPOSE 3100
 

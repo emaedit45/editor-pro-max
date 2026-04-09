@@ -50,7 +50,11 @@ app.post("/render", (req, res) => {
 
   // Build command parts
   const isCloud = !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RENDER || !!process.env.FLY_APP_NAME;
-  const parts = ["npx", "remotion", "render", compositionId, `out/${outputFile}`];
+  const bundleDir = path.join(PROJECT_DIR, "build");
+  const hasBundleDir = fs.existsSync(bundleDir);
+  const parts = hasBundleDir
+    ? ["npx", "remotion", "render", "--bundle-dir", "build", compositionId, `out/${outputFile}`]
+    : ["npx", "remotion", "render", compositionId, `out/${outputFile}`];
   if (isCloud) {
     parts.push("--gl=swiftshader");
   }
@@ -200,12 +204,13 @@ app.post("/render-from-prompt", async (req, res) => {
     fs.writeFileSync(propsAbsolute, JSON.stringify(props));
 
     const isCloudEnv = !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RENDER || !!process.env.FLY_APP_NAME;
-    const parts = [
-      "npx", "remotion", "render", "DynamicMG",
-      "out/" + outputFile,
-      "--props=out/" + propsFileName,
-      "--frames=0-" + (Math.round(durationSeconds * 30) - 1),
-    ];
+    const bundleDirPath = path.join(PROJECT_DIR, "build");
+    const hasBundleDirRFP = fs.existsSync(bundleDirPath);
+    const parts = hasBundleDirRFP
+      ? ["npx", "remotion", "render", "--bundle-dir", "build", "DynamicMG", "out/" + outputFile]
+      : ["npx", "remotion", "render", "DynamicMG", "out/" + outputFile];
+    parts.push("--props=out/" + propsFileName);
+    parts.push("--frames=0-" + (Math.round(durationSeconds * 30) - 1));
     if (isCloudEnv) {
       parts.push("--gl=swiftshader");
     }
