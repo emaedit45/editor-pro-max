@@ -49,7 +49,11 @@ app.post("/render", (req, res) => {
   jobs.set(jobId, job);
 
   // Build command parts
+  const isCloud = !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RENDER || !!process.env.FLY_APP_NAME;
   const parts = ["npx", "remotion", "render", compositionId, `out/${outputFile}`];
+  if (isCloud) {
+    parts.push("--gl=swiftshader");
+  }
 
   // Write props to temp file (Windows CLI mangles JSON quotes)
   const propsFileName = `_props_${jobCounter}.json`;
@@ -195,12 +199,16 @@ app.post("/render-from-prompt", async (req, res) => {
     const propsAbsolute = path.join(OUT_DIR, propsFileName);
     fs.writeFileSync(propsAbsolute, JSON.stringify(props));
 
+    const isCloudEnv = !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RENDER || !!process.env.FLY_APP_NAME;
     const parts = [
       "npx", "remotion", "render", "DynamicMG",
       "out/" + outputFile,
       "--props=out/" + propsFileName,
       "--frames=0-" + (Math.round(durationSeconds * 30) - 1),
     ];
+    if (isCloudEnv) {
+      parts.push("--gl=swiftshader");
+    }
 
     const cmd = parts.join(" ");
     console.log("[" + jobId + "] " + cmd);

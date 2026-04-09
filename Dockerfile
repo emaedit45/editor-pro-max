@@ -1,14 +1,16 @@
 FROM node:20-bookworm
 
-# Install Chrome dependencies for Remotion
+# Install Chromium + ffmpeg + dependencies for Remotion
 RUN apt-get update && apt-get install -y \
     chromium \
+    ffmpeg \
     fonts-ipafont-gothic \
     fonts-wqy-zenhei \
     fonts-thai-tlwg \
     fonts-kacst \
     fonts-freefont-ttf \
     fonts-liberation \
+    fonts-noto-color-emoji \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
@@ -19,17 +21,13 @@ ENV REMOTION_CHROME_EXECUTABLE=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copy ALL files first (including package-lock.json)
-COPY . .
-
-# Force NODE_ENV before install to ensure all deps are installed
+# Install dependencies first (better caching)
+COPY package.json package-lock.json ./
 ENV NODE_ENV=development
 RUN npm install --force
 
-# Verify
-RUN node -e "require('express'); console.log('express OK')"
-RUN node -e "require('cors'); console.log('cors OK')"
-RUN npx tsx --version
+# Copy source
+COPY . .
 
 # Create output directory
 RUN mkdir -p out
