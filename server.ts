@@ -245,6 +245,22 @@ app.post("/render-from-prompt", async (req, res) => {
   }
 });
 
+// ─── SYNC B-ROLLS TO STUDIO ───
+// FloowVideo sends all broll placements, server writes them so Studio can see them
+
+app.post("/sync-brolls", (req, res) => {
+  const { placements } = req.body;
+  if (!placements || !Array.isArray(placements)) {
+    res.status(400).json({ error: "placements array required" });
+    return;
+  }
+
+  const propsFile = path.join(PROJECT_DIR, "public", "broll-props.json");
+  fs.writeFileSync(propsFile, JSON.stringify(placements, null, 2));
+  console.log("[sync] Wrote " + placements.length + " B-roll placements to broll-props.json");
+  res.json({ ok: true, count: placements.length });
+});
+
 app.get("/status/:jobId", (req, res) => {
   const job = jobs.get(req.params.jobId);
   if (!job) {

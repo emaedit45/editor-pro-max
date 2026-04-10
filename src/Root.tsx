@@ -24,6 +24,11 @@ import {BeforeAfterDemo} from "./compositions/BeforeAfterDemo";
 import {TalkingHeadEdit} from "./templates/editing/TalkingHeadEdit";
 import {PodcastClip} from "./templates/editing/PodcastClip";
 
+// Custom compositions
+import {ColombiaVsMexico} from "./compositions/ColombiaVsMexico";
+import {SaleADSReel} from "./compositions/SaleADSReel";
+import {BrollPreview} from "./compositions/BrollPreview";
+
 export const RemotionRoot: React.FC = () => {
   return (
     <>
@@ -232,6 +237,42 @@ export const RemotionRoot: React.FC = () => {
             captionPreset: "bold" as const,
           }}
         />
+      </Folder>
+      <Folder name="Comparativas">
+        <Composition
+          id="ColombiaVsMexico"
+          component={ColombiaVsMexico}
+          durationInFrames={577}
+          fps={30}
+          width={1080}
+          height={1920}
+        />
+      </Folder>
+
+      <Folder name="Reels">
+        <Composition
+          id="SaleADS-Reel"
+          component={SaleADSReel}
+          durationInFrames={1002}
+          fps={60}
+          width={1080}
+          height={1920}
+        />
+      </Folder>
+
+      <Folder name="B-Rolls">
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+          <Composition
+            key={`broll-${i}`}
+            id={`BRoll-${i + 1}`}
+            component={BrollPreview}
+            durationInFrames={150}
+            fps={30}
+            width={1080}
+            height={1920}
+            defaultProps={{ brollIndex: i }}
+          />
+        ))}
       </Folder>
     </>
   );
