@@ -264,7 +264,7 @@ export const RemotionRoot: React.FC = () => {
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
           <Composition
             key={`broll-${i}`}
-            id={`BRoll-${i + 1}`}
+            id={`broll_${i + 1}`}
             component={BrollPreview}
             durationInFrames={150}
             fps={30}
