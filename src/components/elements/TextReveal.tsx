@@ -12,6 +12,9 @@ interface TextRevealProps {
   speed?: number;
   fontSize?: number;
   color?: string;
+  fontFamily?: string;
+  fontWeight?: number;
+  letterSpacing?: string;
   delay?: number;
 }
 
@@ -21,6 +24,9 @@ export const TextReveal: React.FC<TextRevealProps> = ({
   speed = 1,
   fontSize = 52,
   color = "#ffffff",
+  fontFamily,
+  fontWeight: fw,
+  letterSpacing: ls,
   delay = 0,
 }) => {
   const frame = useCurrentFrame();
@@ -60,10 +66,10 @@ export const TextReveal: React.FC<TextRevealProps> = ({
         <span
           style={{
             fontSize,
-            fontFamily: "'SF Mono', 'Fira Code', 'Consolas', monospace",
-            fontWeight: 500,
+            fontFamily: fontFamily || "'SF Mono', 'Fira Code', 'Consolas', monospace",
+            fontWeight: fw || 500,
             color,
-            letterSpacing: "0.02em",
+            letterSpacing: ls || "0.02em",
             lineHeight: 1.5,
           }}
         >
@@ -130,8 +136,8 @@ export const TextReveal: React.FC<TextRevealProps> = ({
               style={{
                 display: "inline-block",
                 fontSize,
-                fontFamily: "'Helvetica Neue', Arial, sans-serif",
-                fontWeight: 600,
+                fontFamily: fontFamily || "'Helvetica Neue', Arial, sans-serif",
+                fontWeight: fw || 600,
                 color,
                 opacity,
                 transform: `translateY(${yOffset}px)`,
@@ -158,8 +164,8 @@ export const TextReveal: React.FC<TextRevealProps> = ({
               style={{
                 display: "inline-block",
                 fontSize,
-                fontFamily: "'Helvetica Neue', Arial, sans-serif",
-                fontWeight: 600,
+                fontFamily: fontFamily || "'Helvetica Neue', Arial, sans-serif",
+                fontWeight: fw || 600,
                 color,
                 opacity,
                 transform: `translateX(${xOffset}px)`,
@@ -188,8 +194,8 @@ export const TextReveal: React.FC<TextRevealProps> = ({
               style={{
                 display: "inline-block",
                 fontSize,
-                fontFamily: "'Helvetica Neue', Arial, sans-serif",
-                fontWeight: 600,
+                fontFamily: fontFamily || "'Helvetica Neue', Arial, sans-serif",
+                fontWeight: fw || 600,
                 color,
                 opacity,
                 filter: `blur(${blur}px)`,

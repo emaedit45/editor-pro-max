@@ -12,6 +12,8 @@ interface GradientTextProps {
   angle?: number;
   fontSize?: number;
   fontWeight?: number;
+  fontFamily?: string;
+  letterSpacing?: string;
   animated?: boolean;
   delay?: number;
 }
@@ -22,6 +24,8 @@ export const GradientText: React.FC<GradientTextProps> = ({
   angle = 135,
   fontSize = 72,
   fontWeight = 800,
+  fontFamily,
+  letterSpacing: ls,
   animated = true,
   delay = 0,
 }) => {
@@ -70,7 +74,7 @@ export const GradientText: React.FC<GradientTextProps> = ({
         style={{
           fontSize,
           fontWeight,
-          fontFamily: "'Helvetica Neue', Arial, sans-serif",
+          fontFamily: fontFamily || "'Helvetica Neue', Arial, sans-serif",
           background: `linear-gradient(${angle}deg, ${colorStops})`,
           backgroundSize: gradientSize,
           backgroundPosition: gradientPosition,
@@ -78,7 +82,7 @@ export const GradientText: React.FC<GradientTextProps> = ({
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
           lineHeight: 1.2,
-          letterSpacing: "-0.02em",
+          letterSpacing: ls || "-0.02em",
           textAlign: "center" as const,
           padding: "0 20px",
         }}

@@ -45,6 +45,60 @@ import {CursorClick} from "../components/elements/CursorClick";
 import {SocialPlatformGrid} from "../components/elements/SocialPlatformGrid";
 import {GrowthChart} from "../components/elements/GrowthChart";
 import {CalendarCard} from "../components/elements/CalendarCard";
+import {RadarChart} from "../components/elements/RadarChart";
+import {TreemapChart} from "../components/elements/TreemapChart";
+import {FunnelChart} from "../components/elements/FunnelChart";
+import {WaterfallChart} from "../components/elements/WaterfallChart";
+import {AreaChart} from "../components/elements/AreaChart";
+import {BubbleChart} from "../components/elements/BubbleChart";
+import {ScatterPlot} from "../components/elements/ScatterPlot";
+import {HeatCalendar} from "../components/elements/HeatCalendar";
+import {ToggleSwitch} from "../components/elements/ToggleSwitch";
+import {SliderControl} from "../components/elements/SliderControl";
+import {SearchBar} from "../components/elements/SearchBar";
+import {TabsComponent} from "../components/elements/TabsComponent";
+import {AvatarStack} from "../components/elements/AvatarStack";
+import {CodeBlock} from "../components/elements/CodeBlock";
+import {StatusBadge} from "../components/elements/StatusBadge";
+import {LoadingSpinner} from "../components/elements/LoadingSpinner";
+import {TooltipPopover} from "../components/elements/TooltipPopover";
+import {TypewriterCursor} from "../components/elements/TypewriterCursor";
+import {SplitText} from "../components/elements/SplitText";
+import {RotatingWords} from "../components/elements/RotatingWords";
+import {CountUpText} from "../components/elements/CountUpText";
+import {StrikethroughText} from "../components/elements/StrikethroughText";
+import {OutlinedText} from "../components/elements/OutlinedText";
+import {ThreeDText} from "../components/elements/ThreeDText";
+import TweetCard from "../components/elements/TweetCard";
+import InstagramPost from "../components/elements/InstagramPost";
+import YoutubeThumbnail from "../components/elements/YoutubeThumbnail";
+import FollowerCounter from "../components/elements/FollowerCounter";
+import LikeAnimation from "../components/elements/LikeAnimation";
+import CommentBubble from "../components/elements/CommentBubble";
+import WaveDivider from "../components/elements/WaveDivider";
+import BlobShape from "../components/elements/BlobShape";
+import GeometricPattern from "../components/elements/GeometricPattern";
+import NeonLine from "../components/elements/NeonLine";
+import PulseRing from "../components/elements/PulseRing";
+import OrbitAnimation from "../components/elements/OrbitAnimation";
+import DnaHelix from "../components/elements/DnaHelix";
+import PyramidChart from "../components/elements/PyramidChart";
+import OrgChart from "../components/elements/OrgChart";
+import MindMap from "../components/elements/MindMap";
+import VennDiagram from "../components/elements/VennDiagram";
+import ComparisonTable from "../components/elements/ComparisonTable";
+import FeatureGrid from "../components/elements/FeatureGrid";
+import ScrollAnimation from "../components/elements/ScrollAnimation";
+import SwipeGesture from "../components/elements/SwipeGesture";
+import TapRipple from "../components/elements/TapRipple";
+import DragIndicator from "../components/elements/DragIndicator";
+import PinchZoom from "../components/elements/PinchZoom";
+import LogoReveal from "../components/elements/LogoReveal";
+import QrCode from "../components/elements/QrCode";
+import HashtagLabel from "../components/elements/HashtagLabel";
+import AppStoreCard from "../components/elements/AppStoreCard";
+import PricingCard from "../components/elements/PricingCard";
+import BrandColorPalette from "../components/elements/BrandColorPalette";
 
 // ─── TYPES ───
 
@@ -91,7 +145,15 @@ interface ExtendedElementConfig {
     | "beforeAfter" | "versusLayout" | "percentageSplit" | "phoneFrame" | "laptopFrame"
     | "quoteBlock" | "highlightedText" | "textReveal" | "gradientText" | "testimonialCard" | "starRating" | "reviewScore"
     | "timelineVertical" | "processSteps" | "iconGrid" | "numberedList" | "animatedArrow" | "circleHighlight" | "underlineSwoosh"
-    | "confettiBurst" | "glowPulse" | "countdownTimer" | "cursorClick" | "socialPlatforms" | "growthChart" | "calendarCard";
+    | "confettiBurst" | "glowPulse" | "countdownTimer" | "cursorClick" | "socialPlatforms" | "growthChart" | "calendarCard"
+    | "radarChart" | "treemapChart" | "funnelChart" | "waterfallChart" | "areaChart" | "bubbleChart" | "scatterPlot" | "heatCalendar"
+    | "toggleSwitch" | "sliderControl" | "searchBar" | "tabsComponent" | "avatarStack" | "codeBlock" | "statusBadge" | "loadingSpinner" | "tooltipPopover"
+    | "typewriterCursor" | "splitText" | "rotatingWords" | "countUpText" | "strikethroughText" | "outlinedText" | "threeDText"
+    | "tweetCard" | "instagramPost" | "youtubeThumbnail" | "followerCounter" | "likeAnimation" | "commentBubble"
+    | "waveDivider" | "blobShape" | "geometricPattern" | "neonLine" | "pulseRing" | "orbitAnimation" | "dnaHelix"
+    | "pyramidChart" | "orgChart" | "mindMap" | "vennDiagram" | "comparisonTable" | "featureGrid"
+    | "scrollAnimation" | "swipeGesture" | "tapRipple" | "dragIndicator" | "pinchZoom"
+    | "logoReveal" | "qrCode" | "hashtagLabel" | "appStoreCard" | "pricingCard" | "brandColorPalette";
   delay?: number;
   [key: string]: any;
 }
@@ -848,7 +910,7 @@ const RenderElement: React.FC<{
     case "progressCircle":
       return <ProgressCircle value={(element as any).value} max={(element as any).max} color={(element as any).color} trackColor={(element as any).trackColor} size={(element as any).size} label={(element as any).label} delay={delay} />;
     case "beforeAfter":
-      return <BeforeAfter beforeLabel={(element as any).beforeLabel} afterLabel={(element as any).afterLabel} beforeItems={(element as any).beforeItems} afterItems={(element as any).afterItems} beforeColor={(element as any).beforeColor} afterColor={(element as any).afterColor} delay={delay} />;
+      return <BeforeAfter beforeLabel={(element as any).beforeLabel} afterLabel={(element as any).afterLabel} beforeItems={(element as any).beforeItems} afterItems={(element as any).afterItems} beforeColor={(element as any).beforeColor} afterColor={(element as any).afterColor} size={(element as any).size} delay={delay} />;
     case "versusLayout":
       return <VersusLayout left={(element as any).left} right={(element as any).right} delay={delay} />;
     case "percentageSplit":
@@ -899,6 +961,61 @@ const RenderElement: React.FC<{
       return <GrowthChart data={(element as any).data} color={(element as any).color} label={(element as any).label} labelValue={(element as any).labelValue} delay={delay} />;
     case "calendarCard":
       return <CalendarCard day={(element as any).day} date={(element as any).date} time={(element as any).time} isLive={(element as any).isLive} label={(element as any).label} color={(element as any).color} delay={delay} />;
+    // ─── 54 NEW ELEMENTS ───
+    case "radarChart": return <RadarChart labels={(element as any).labels} values={(element as any).values} maxValue={(element as any).maxValue} color={(element as any).color} delay={delay} />;
+    case "treemapChart": return <TreemapChart data={(element as any).data} delay={delay} />;
+    case "funnelChart": return <FunnelChart stages={(element as any).stages} showPercentage={(element as any).showPercentage} delay={delay} />;
+    case "waterfallChart": return <WaterfallChart steps={(element as any).steps} positiveColor={(element as any).positiveColor} negativeColor={(element as any).negativeColor} delay={delay} />;
+    case "areaChart": return <AreaChart dataPoints={(element as any).dataPoints} color={(element as any).color} showDots={(element as any).showDots} delay={delay} />;
+    case "bubbleChart": return <BubbleChart bubbles={(element as any).bubbles} delay={delay} />;
+    case "scatterPlot": return <ScatterPlot points={(element as any).points} dotColor={(element as any).dotColor} delay={delay} />;
+    case "heatCalendar": return <HeatCalendar data={(element as any).data} colorScale={(element as any).colorScale} delay={delay} />;
+    case "toggleSwitch": return <ToggleSwitch label={(element as any).label} onColor={(element as any).onColor} delay={delay} />;
+    case "sliderControl": return <SliderControl targetValue={(element as any).targetValue} max={(element as any).max} label={(element as any).label} color={(element as any).color} delay={delay} />;
+    case "searchBar": return <SearchBar query={(element as any).query} results={(element as any).results} delay={delay} />;
+    case "tabsComponent": return <TabsComponent tabs={(element as any).tabs} activeIndex={(element as any).activeIndex} color={(element as any).color} delay={delay} />;
+    case "avatarStack": return <AvatarStack count={(element as any).count} maxVisible={(element as any).maxVisible} size={(element as any).size} delay={delay} />;
+    case "codeBlock": return <CodeBlock code={(element as any).code} delay={delay} />;
+    case "statusBadge": return <StatusBadge text={(element as any).text} status={(element as any).status} delay={delay} />;
+    case "loadingSpinner": return <LoadingSpinner variant={(element as any).variant} color={(element as any).color} delay={delay} />;
+    case "tooltipPopover": return <TooltipPopover text={(element as any).text} direction={(element as any).direction} delay={delay} />;
+    case "typewriterCursor": return <TypewriterCursor text={(element as any).text} speed={(element as any).speed} cursorColor={(element as any).cursorColor} delay={delay} />;
+    case "splitText": return <SplitText topText={(element as any).topText} revealText={(element as any).revealText} delay={delay} />;
+    case "rotatingWords": return <RotatingWords prefix={(element as any).prefix} words={(element as any).words} delay={delay} />;
+    case "countUpText": return <CountUpText endValue={(element as any).endValue} prefix={(element as any).prefix} suffix={(element as any).suffix} delay={delay} />;
+    case "strikethroughText": return <StrikethroughText originalText={(element as any).originalText} newText={(element as any).newText} lineColor={(element as any).lineColor} delay={delay} />;
+    case "outlinedText": return <OutlinedText text={(element as any).text} strokeColor={(element as any).strokeColor} fontSize={(element as any).fontSize} delay={delay} />;
+    case "threeDText": return <ThreeDText text={(element as any).text} color={(element as any).color} depth={(element as any).depth} delay={delay} />;
+    case "tweetCard": return <TweetCard handle={(element as any).handle} text={(element as any).text} likes={(element as any).likes} retweets={(element as any).retweets} delay={delay} />;
+    case "instagramPost": return <InstagramPost username={(element as any).username} caption={(element as any).caption} likes={(element as any).likes} delay={delay} />;
+    case "youtubeThumbnail": return <YoutubeThumbnail title={(element as any).title} channel={(element as any).channel} views={(element as any).views} delay={delay} />;
+    case "followerCounter": return <FollowerCounter platform={(element as any).platform} startCount={(element as any).startCount} endCount={(element as any).endCount} delay={delay} />;
+    case "likeAnimation": return <LikeAnimation icon={(element as any).icon} count={(element as any).count} color={(element as any).color} delay={delay} />;
+    case "commentBubble": return <CommentBubble text={(element as any).text} username={(element as any).username} side={(element as any).side} delay={delay} />;
+    case "waveDivider": return <WaveDivider color={(element as any).color} amplitude={(element as any).amplitude} speed={(element as any).speed} delay={delay} />;
+    case "blobShape": return <BlobShape color={(element as any).color} size={(element as any).size} speed={(element as any).speed} delay={delay} />;
+    case "geometricPattern": return <GeometricPattern shape={(element as any).shape} color={(element as any).color} delay={delay} />;
+    case "neonLine": return <NeonLine color={(element as any).color} glowIntensity={(element as any).glowIntensity} delay={delay} />;
+    case "pulseRing": return <PulseRing color={(element as any).color} ringCount={(element as any).ringCount} speed={(element as any).speed} delay={delay} />;
+    case "orbitAnimation": return <OrbitAnimation orbitCount={(element as any).orbitCount} colors={(element as any).colors} speed={(element as any).speed} delay={delay} />;
+    case "dnaHelix": return <DnaHelix color1={(element as any).color1} color2={(element as any).color2} pairs={(element as any).pairs} delay={delay} />;
+    case "pyramidChart": return <PyramidChart tiers={(element as any).tiers} delay={delay} />;
+    case "orgChart": return <OrgChart nodes={(element as any).nodes} delay={delay} />;
+    case "mindMap": return <MindMap center={(element as any).center} branches={(element as any).branches} delay={delay} />;
+    case "vennDiagram": return <VennDiagram sets={(element as any).sets} overlapLabel={(element as any).overlapLabel} delay={delay} />;
+    case "comparisonTable": return <ComparisonTable headers={(element as any).headers} rows={(element as any).rows} delay={delay} />;
+    case "featureGrid": return <FeatureGrid features={(element as any).features} columns={(element as any).columns} delay={delay} />;
+    case "scrollAnimation": return <ScrollAnimation items={(element as any).items} scrollSpeed={(element as any).scrollSpeed} delay={delay} />;
+    case "swipeGesture": return <SwipeGesture direction={(element as any).direction} delay={delay} />;
+    case "tapRipple": return <TapRipple x={(element as any).x} y={(element as any).y} color={(element as any).color} delay={delay} />;
+    case "dragIndicator": return <DragIndicator delay={delay} />;
+    case "pinchZoom": return <PinchZoom direction={(element as any).direction} delay={delay} />;
+    case "logoReveal": return <LogoReveal text={(element as any).text} color={(element as any).color} delay={delay} />;
+    case "qrCode": return <QrCode size={(element as any).size} color={(element as any).color} delay={delay} />;
+    case "hashtagLabel": return <HashtagLabel text={(element as any).text} color={(element as any).color} delay={delay} />;
+    case "appStoreCard": return <AppStoreCard appName={(element as any).appName} rating={(element as any).rating} delay={delay} />;
+    case "pricingCard": return <PricingCard planName={(element as any).planName} price={(element as any).price} features={(element as any).features} delay={delay} />;
+    case "brandColorPalette": return <BrandColorPalette colors={(element as any).colors} delay={delay} />;
     default:
       return null;
   }
@@ -985,6 +1102,7 @@ const SceneRenderer: React.FC<{
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0,
           height: (scene as any)?.fullFrame ? 1920 : 960,
+          padding: "0 50px",
         }}>
           {regularElements.map((element, i) => (
             <RenderElement key={i} element={element} frame={frame} fps={fps} />

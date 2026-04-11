@@ -13,6 +13,7 @@ interface BeforeAfterProps {
   afterItems?: string[];
   beforeColor?: string;
   afterColor?: string;
+  size?: number;
   delay?: number;
 }
 
@@ -23,8 +24,10 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({
   afterItems = [],
   beforeColor = "#dc2626",
   afterColor = "#16a34a",
+  size = 1,
   delay = 0,
 }) => {
+  const s = size;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const delayFrames = Math.round(delay * fps);
@@ -46,37 +49,39 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({
 
   const dividerX = interpolate(dividerProgress, [0, 1], [0, 100]);
 
-  const beforeLabelOpacity = spring({
+  const beforeIn = spring({
     frame: adjustedFrame - 15,
     fps,
     config: springConfig,
   });
 
-  const afterLabelOpacity = spring({
+  const afterIn = spring({
     frame: adjustedFrame - 25,
     fps,
     config: springConfig,
   });
 
-  const beforeLabelY = interpolate(beforeLabelOpacity, [0, 1], [20, 0]);
-  const afterLabelY = interpolate(afterLabelOpacity, [0, 1], [20, 0]);
+  const itemFontSize = 16 * s;
+  const labelFontSize = 14 * s;
+  const dotSize = 8 * s;
+  const itemGap = 12 * s;
+  const sectionPad = `${28 * s}px ${36 * s}px`;
 
   return (
     <div
       style={{
         width: "100%",
-        height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif",
       }}
     >
       <div
         style={{
-          width: 700,
-          borderRadius: 24,
+          width: "100%",
+          maxWidth: 980,
+          borderRadius: 20,
           overflow: "hidden",
           transform: `scale(${containerScale})`,
           boxShadow: "0 25px 60px rgba(0,0,0,0.4)",
@@ -86,36 +91,38 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({
         {/* Before Section */}
         <div
           style={{
-            position: "relative",
-            padding: "40px 48px",
-            background: `linear-gradient(135deg, ${beforeColor}22, ${beforeColor}11)`,
+            padding: sectionPad,
+            background: `linear-gradient(135deg, ${beforeColor}18, ${beforeColor}0a)`,
             borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}
         >
           <div
             style={{
-              opacity: beforeLabelOpacity,
-              transform: `translateY(${beforeLabelY}px)`,
+              opacity: beforeIn,
+              transform: `translateY(${interpolate(beforeIn, [0, 1], [20, 0])}px)`,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <div
               style={{
                 display: "inline-block",
-                padding: "6px 18px",
-                borderRadius: 20,
-                background: `${beforeColor}33`,
-                border: `1px solid ${beforeColor}55`,
+                padding: `${6 * s}px ${20 * s}px`,
+                borderRadius: 24,
+                background: `${beforeColor}25`,
+                border: `1px solid ${beforeColor}40`,
                 color: beforeColor,
-                fontSize: 13,
+                fontSize: labelFontSize,
                 fontWeight: 700,
-                letterSpacing: 1.5,
+                letterSpacing: 2,
                 textTransform: "uppercase",
-                marginBottom: 16,
+                marginBottom: 14 * s,
               }}
             >
               {beforeLabel}
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: itemGap, alignItems: "center" }}>
               {beforeItems.map((item, i) => {
                 const itemSpring = spring({
                   frame: adjustedFrame - 20 - i * 5,
@@ -127,22 +134,23 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({
                     key={i}
                     style={{
                       opacity: itemSpring,
-                      transform: `translateX(${interpolate(itemSpring, [0, 1], [-30, 0])}px)`,
+                      transform: `translateX(${interpolate(itemSpring, [0, 1], [-20, 0])}px)`,
                       display: "flex",
                       alignItems: "center",
-                      gap: 10,
+                      gap: 10 * s,
                       color: "rgba(255,255,255,0.8)",
-                      fontSize: 16,
+                      fontSize: itemFontSize,
                       fontWeight: 500,
                     }}
                   >
                     <span
                       style={{
-                        width: 8,
-                        height: 8,
+                        width: dotSize,
+                        height: dotSize,
                         borderRadius: "50%",
                         background: beforeColor,
                         flexShrink: 0,
+                        boxShadow: `0 0 8px ${beforeColor}50`,
                       }}
                     />
                     {item}
@@ -156,35 +164,37 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({
         {/* After Section */}
         <div
           style={{
-            position: "relative",
-            padding: "40px 48px",
-            background: `linear-gradient(135deg, ${afterColor}22, ${afterColor}11)`,
+            padding: sectionPad,
+            background: `linear-gradient(135deg, ${afterColor}18, ${afterColor}0a)`,
           }}
         >
           <div
             style={{
-              opacity: afterLabelOpacity,
-              transform: `translateY(${afterLabelY}px)`,
+              opacity: afterIn,
+              transform: `translateY(${interpolate(afterIn, [0, 1], [20, 0])}px)`,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <div
               style={{
                 display: "inline-block",
-                padding: "6px 18px",
-                borderRadius: 20,
-                background: `${afterColor}33`,
-                border: `1px solid ${afterColor}55`,
+                padding: `${6 * s}px ${20 * s}px`,
+                borderRadius: 24,
+                background: `${afterColor}25`,
+                border: `1px solid ${afterColor}40`,
                 color: afterColor,
-                fontSize: 13,
+                fontSize: labelFontSize,
                 fontWeight: 700,
-                letterSpacing: 1.5,
+                letterSpacing: 2,
                 textTransform: "uppercase",
-                marginBottom: 16,
+                marginBottom: 14 * s,
               }}
             >
               {afterLabel}
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: itemGap, alignItems: "center" }}>
               {afterItems.map((item, i) => {
                 const itemSpring = spring({
                   frame: adjustedFrame - 30 - i * 5,
@@ -196,22 +206,23 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({
                     key={i}
                     style={{
                       opacity: itemSpring,
-                      transform: `translateX(${interpolate(itemSpring, [0, 1], [-30, 0])}px)`,
+                      transform: `translateX(${interpolate(itemSpring, [0, 1], [-20, 0])}px)`,
                       display: "flex",
                       alignItems: "center",
-                      gap: 10,
+                      gap: 10 * s,
                       color: "rgba(255,255,255,0.9)",
-                      fontSize: 16,
+                      fontSize: itemFontSize,
                       fontWeight: 500,
                     }}
                   >
                     <span
                       style={{
-                        width: 8,
-                        height: 8,
+                        width: dotSize,
+                        height: dotSize,
                         borderRadius: "50%",
                         background: afterColor,
                         flexShrink: 0,
+                        boxShadow: `0 0 8px ${afterColor}50`,
                       }}
                     />
                     {item}
@@ -257,7 +268,7 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({
           style={{
             position: "absolute",
             inset: 0,
-            borderRadius: 24,
+            borderRadius: 20,
             border: "1px solid rgba(255,255,255,0.08)",
             pointerEvents: "none",
           }}
