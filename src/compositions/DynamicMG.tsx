@@ -42,6 +42,9 @@ import {ConfettiBurst} from "../components/elements/ConfettiBurst";
 import {GlowPulse} from "../components/elements/GlowPulse";
 import {CountdownTimer} from "../components/elements/CountdownTimer";
 import {CursorClick} from "../components/elements/CursorClick";
+import {SocialPlatformGrid} from "../components/elements/SocialPlatformGrid";
+import {GrowthChart} from "../components/elements/GrowthChart";
+import {CalendarCard} from "../components/elements/CalendarCard";
 
 // ─── TYPES ───
 
@@ -88,7 +91,7 @@ interface ExtendedElementConfig {
     | "beforeAfter" | "versusLayout" | "percentageSplit" | "phoneFrame" | "laptopFrame"
     | "quoteBlock" | "highlightedText" | "textReveal" | "gradientText" | "testimonialCard" | "starRating" | "reviewScore"
     | "timelineVertical" | "processSteps" | "iconGrid" | "numberedList" | "animatedArrow" | "circleHighlight" | "underlineSwoosh"
-    | "confettiBurst" | "glowPulse" | "countdownTimer" | "cursorClick";
+    | "confettiBurst" | "glowPulse" | "countdownTimer" | "cursorClick" | "socialPlatforms" | "growthChart" | "calendarCard";
   delay?: number;
   [key: string]: any;
 }
@@ -859,9 +862,9 @@ const RenderElement: React.FC<{
     case "highlightedText":
       return <HighlightedText text={(element as any).text} highlightWords={(element as any).highlightWords} highlightColor={(element as any).highlightColor} fontSize={(element as any).fontSize} textColor={(element as any).textColor} delay={delay} />;
     case "textReveal":
-      return <TextReveal text={(element as any).text} revealStyle={(element as any).revealStyle} speed={(element as any).speed} fontSize={(element as any).fontSize} color={(element as any).color} delay={delay} />;
+      return <TextReveal text={(element as any).text} revealStyle={(element as any).revealStyle} speed={(element as any).speed} fontSize={(element as any).fontSize} color={(element as any).color} fontFamily={(element as any).fontFamily} fontWeight={(element as any).fontWeight} letterSpacing={(element as any).letterSpacing} delay={delay} />;
     case "gradientText":
-      return <GradientText text={(element as any).text} colors={(element as any).colors} angle={(element as any).angle} fontSize={(element as any).fontSize} fontWeight={(element as any).fontWeight} animated={(element as any).animated} delay={delay} />;
+      return <GradientText text={(element as any).text} colors={(element as any).colors} angle={(element as any).angle} fontSize={(element as any).fontSize} fontWeight={(element as any).fontWeight} fontFamily={(element as any).fontFamily} letterSpacing={(element as any).letterSpacing} animated={(element as any).animated} delay={delay} />;
     case "testimonialCard":
       return <TestimonialCard quote={(element as any).quote} author={(element as any).author} role={(element as any).role} rating={(element as any).rating} color={(element as any).color} delay={delay} />;
     case "starRating":
@@ -890,6 +893,12 @@ const RenderElement: React.FC<{
       return <CountdownTimer from={(element as any).from} to={(element as any).to} style={(element as any).style} color={(element as any).color} size={(element as any).size} label={(element as any).label} delay={delay} />;
     case "cursorClick":
       return <CursorClick startX={(element as any).startX} startY={(element as any).startY} endX={(element as any).endX} endY={(element as any).endY} clickDelay={(element as any).clickDelay} cursorColor={(element as any).cursorColor} rippleColor={(element as any).rippleColor} delay={delay} />;
+    case "socialPlatforms":
+      return <SocialPlatformGrid platforms={(element as any).platforms} iconSize={(element as any).iconSize} layout={(element as any).layout} delay={delay} />;
+    case "growthChart":
+      return <GrowthChart data={(element as any).data} color={(element as any).color} label={(element as any).label} labelValue={(element as any).labelValue} delay={delay} />;
+    case "calendarCard":
+      return <CalendarCard day={(element as any).day} date={(element as any).date} time={(element as any).time} isLive={(element as any).isLive} label={(element as any).label} color={(element as any).color} delay={delay} />;
     default:
       return null;
   }

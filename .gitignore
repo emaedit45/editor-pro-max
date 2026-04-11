@@ -33,3 +33,10 @@ dist/
 .trae/
 .windsurf/
 .zencoder/
+build/
+whisper.cpp/
+*.wav
+*.ogg
+*.bin
+*.exe
+*.dll
