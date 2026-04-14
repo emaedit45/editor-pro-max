@@ -1,3 +1,4 @@
+import React from "react";
 import {
   AbsoluteFill,
   Sequence,
@@ -5,6 +6,8 @@ import {
   useVideoConfig,
   spring,
   interpolate,
+  staticFile,
+  Img,
 } from "remotion";
 import {GradientBackground} from "../components/backgrounds/GradientBackground";
 import {ParticleField} from "../components/backgrounds/ParticleField";
@@ -153,7 +156,7 @@ interface ExtendedElementConfig {
     | "waveDivider" | "blobShape" | "geometricPattern" | "neonLine" | "pulseRing" | "orbitAnimation" | "dnaHelix"
     | "pyramidChart" | "orgChart" | "mindMap" | "vennDiagram" | "comparisonTable" | "featureGrid"
     | "scrollAnimation" | "swipeGesture" | "tapRipple" | "dragIndicator" | "pinchZoom"
-    | "logoReveal" | "qrCode" | "hashtagLabel" | "appStoreCard" | "pricingCard" | "brandColorPalette";
+    | "logoReveal" | "qrCode" | "hashtagLabel" | "appStoreCard" | "pricingCard" | "brandColorPalette" | "image";
   delay?: number;
   [key: string]: any;
 }
@@ -781,6 +784,22 @@ const Divider: React.FC<{
   );
 };
 
+// ─── ERROR BOUNDARY — skip elements that crash instead of breaking entire B-roll ───
+
+class SafeElement extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
+  constructor(props: {children: React.ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
 // ─── ENTRANCE ANIMATION WRAPPER ───
 
 const EntranceWrapper: React.FC<{
@@ -961,6 +980,17 @@ const RenderElement: React.FC<{
       return <GrowthChart data={(element as any).data} color={(element as any).color} label={(element as any).label} labelValue={(element as any).labelValue} delay={delay} />;
     case "calendarCard":
       return <CalendarCard day={(element as any).day} date={(element as any).date} time={(element as any).time} isLive={(element as any).isLive} label={(element as any).label} color={(element as any).color} delay={delay} />;
+    case "image": {
+      const imgEl = element as any;
+      const imgProgress = spring({fps, frame: frame - toFrames(delay, fps), config: {damping: 14, stiffness: 100}});
+      const imgOpacity = interpolate(imgProgress, [0, 1], [0, 1]);
+      const imgScale = interpolate(imgProgress, [0, 1], [0.9, 1]);
+      return (
+        <div style={{opacity: imgOpacity, transform: `scale(${imgScale})`, display: "flex", justifyContent: "center"}}>
+          <Img src={staticFile(imgEl.src)} style={{width: imgEl.width || 200, height: imgEl.height || "auto", objectFit: "contain"}} />
+        </div>
+      );
+    }
     // ─── 54 NEW ELEMENTS ───
     case "radarChart": return <RadarChart labels={(element as any).labels} values={(element as any).values} maxValue={(element as any).maxValue} color={(element as any).color} delay={delay} />;
     case "treemapChart": return <TreemapChart data={(element as any).data} delay={delay} />;
@@ -1024,9 +1054,11 @@ const RenderElement: React.FC<{
   if (!rendered) return null;
 
   return (
-    <EntranceWrapper entrance={entrance} position={position} frame={frame} fps={fps} delayFrames={delayFrames}>
-      {rendered}
-    </EntranceWrapper>
+    <SafeElement>
+      <EntranceWrapper entrance={entrance} position={position} frame={frame} fps={fps} delayFrames={delayFrames}>
+        {rendered}
+      </EntranceWrapper>
+    </SafeElement>
   );
 };
 
