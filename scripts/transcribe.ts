@@ -8,7 +8,7 @@
 import path from "path";
 import {writeFileSync, existsSync} from "fs";
 
-const inputPath = process.argv[2] || path.join("public", "assets", "audio.wav");
+const inputPath = path.resolve(process.argv[2] || path.join("public", "assets", "audio.wav"));
 const whisperPath = path.join(process.cwd(), "whisper.cpp");
 const outputPath = path.join("public", "captions.json");
 
@@ -35,9 +35,9 @@ async function main() {
   console.log(alreadyExisted ? "Whisper.cpp already installed" : "Whisper.cpp installed");
 
   // Step 2: Download model
-  console.log("Downloading model (medium.en)...");
+  console.log("Downloading model (medium — multilingual)...");
   await downloadWhisperModel({
-    model: "medium.en",
+    model: "medium",
     folder: whisperPath,
   });
   console.log("Model ready");
@@ -45,11 +45,12 @@ async function main() {
   // Step 3: Transcribe
   console.log(`Transcribing: ${inputPath}`);
   const whisperOutput = await transcribe({
-    model: "medium.en",
+    model: "medium",
     whisperPath,
     whisperCppVersion: "1.5.5",
     inputPath,
     tokenLevelTimestamps: true,
+    language: "es",
   });
 
   // Step 4: Convert to captions

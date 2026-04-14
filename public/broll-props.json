@@ -1,1 +1,184 @@
-[]
+[
+  {
+    "id": "BRoll-1",
+    "props": {
+      "scenes": [
+        {
+          "duration": 4,
+          "elements": [
+            {
+              "text": "VELOCIDAD IA",
+              "type": "badge",
+              "color": "#6429cd",
+              "delay": 0.2
+            },
+            {
+              "type": "counter",
+              "color": "#ff6b35",
+              "delay": 0.5,
+              "label": "PROCESAMIENTO",
+              "value": 52,
+              "suffix": "s",
+              "fontSize": 95
+            },
+            {
+              "type": "progressCircle",
+              "color": "#6429cd",
+              "delay": 1.2,
+              "value": 100
+            }
+          ],
+          "particles": {
+            "color": "rgba(100,41,205,0.2)",
+            "count": 30,
+            "direction": "up"
+          },
+          "background": {
+            "type": "gradient",
+            "angle": 160,
+            "colors": [
+              "#050510",
+              "#0a0618"
+            ]
+          }
+        }
+      ]
+    },
+    "reason": "Visualización del tiempo récord de 52 segundos mencionado",
+    "duration": 4,
+    "startTime": 9.2,
+    "compositionId": "DynamicMG"
+  },
+  {
+    "id": "BRoll-2",
+    "props": {
+      "scenes": [
+        {
+          "duration": 4,
+          "elements": [
+            {
+              "text": "Escala con IA",
+              "type": "title",
+              "delay": 0.3,
+              "fontSize": 52,
+              "highlight": "Escala",
+              "highlightColor": "#ff6b35"
+            },
+            {
+              "type": "growthChart",
+              "color": "#6429cd",
+              "delay": 0.6,
+              "values": [
+                10,
+                30,
+                25,
+                60,
+                85,
+                100
+              ]
+            }
+          ],
+          "background": {
+            "type": "radial",
+            "colors": [
+              "#0a0618",
+              "#050510"
+            ]
+          }
+        }
+      ]
+    },
+    "reason": "Refuerzo visual del concepto de escalar el presupuesto",
+    "duration": 4,
+    "startTime": 29.5,
+    "compositionId": "DynamicMG"
+  },
+  {
+    "id": "BRoll-3",
+    "props": {
+      "scenes": [
+        {
+          "duration": 4,
+          "elements": [
+            {
+              "text": "FACTURACIÓN",
+              "type": "badge",
+              "color": "#ff6b35",
+              "delay": 0.2
+            },
+            {
+              "type": "glassCard",
+              "delay": 0.5,
+              "children": [
+                {
+                  "type": "numberTicker",
+                  "color": "#6429cd",
+                  "delay": 0.8,
+                  "label": "EN VENTAS",
+                  "value": 1053,
+                  "suffix": "M",
+                  "fontSize": 85
+                }
+              ]
+            }
+          ],
+          "background": {
+            "type": "gradient",
+            "angle": 135,
+            "colors": [
+              "#050510",
+              "#12061e"
+            ]
+          }
+        }
+      ]
+    },
+    "reason": "Destaque de la cifra de ventas de 1053 millones",
+    "duration": 4,
+    "startTime": 44.5,
+    "compositionId": "DynamicMG"
+  },
+  {
+    "id": "BRoll-4",
+    "props": {
+      "scenes": [
+        {
+          "duration": 4,
+          "elements": [
+            {
+              "text": "ACCESO GRATIS",
+              "type": "title",
+              "delay": 0.3,
+              "fontSize": 56,
+              "gradient": [
+                "#6429cd",
+                "#ff6b35"
+              ]
+            },
+            {
+              "text": "RESERVAR CUPO",
+              "type": "ctaButton",
+              "delay": 1.2,
+              "gradient": [
+                "#ff6b35",
+                "#6429cd"
+              ]
+            }
+          ],
+          "background": {
+            "type": "gradient",
+            "angle": 180,
+            "colors": [
+              "#08060e",
+              "#0e0820"
+            ]
+          }
+        }
+      ]
+    },
+    "reason": "Llamado a la acción para la clase gratuita",
+    "duration": 4,
+    "startTime": 68.5,
+    "compositionId": "DynamicMG"
+  }
+]
