@@ -26,4 +26,5 @@ export const loadDefaultFonts = () => {
   loadGoogleFont("Poppins");
   loadGoogleFont("Playfair Display");
   loadGoogleFont("JetBrains Mono", "400;500;700");
+  loadGoogleFont("Plus Jakarta Sans", "200;300;400;500;600;700;800");
 };
